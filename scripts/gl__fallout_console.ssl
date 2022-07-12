@@ -32,13 +32,17 @@ variable data;
 // ~ key on US QWERTY
 #define DEFAULT_CONSOLE_KEYCODE 41
 
+// Keycode to return when we want to hijack keys and not send
+// then to be processed by Fallout
+#define KEYCODE_THAT_DOES_NOTHING 255
+
 // Tracked whether SHIFT in currently pressed because key_pressed()
 // doesn't capture SHIFT in the *pressed* event (which we use)
 // it only works in the *released* event (which we don't use)
 variable is_shift_pressed = false;
 
 procedure on_enter begin
-    // call ConsoleUI_ExecuteCurrentCommand;
+    call ConsoleUI_ExecuteCurrentCommand;
 end
 
 procedure on_delete begin
@@ -85,25 +89,27 @@ procedure on_keypress begin
     variable pressed = get_sfall_arg,
              keycode = get_sfall_arg;
 
+    // We only care about the *pressed* event, not *released*
+    if not pressed then return;
+
     // Track SHIFT
     if keycode == DIK_LSHIFT or keycode == DIK_RSHIFT then begin
         is_shift_pressed = pressed;
         return;
     end
 
-    // We only care about the *pressed* event, not *released*
-    if not pressed then return;
-
     // The .ini configuration file uses string keys.
     // So get a string representation of the keycode.
     variable string_keycode = sprintf("%s", keycode);
 
+    // Handle visibility toggle shortcuts
     switch string_keycode begin
-        case data.config.Shortcuts.toggle_console: begin call ConsoleUI_ToggleOpen; return; end
-        case data.config.Shortcuts.open_console:   begin call ConsoleUI_Show;       return; end
-        case data.config.Shortcuts.close_console:  begin call ConsoleUI_Hide;       return; end
+        case data.config.Shortcuts.toggle_console: begin call ConsoleUI_ToggleOpen; set_sfall_return(KEYCODE_THAT_DOES_NOTHING); return; end
+        case data.config.Shortcuts.open_console:   begin call ConsoleUI_Show;       set_sfall_return(KEYCODE_THAT_DOES_NOTHING); return; end
+        case data.config.Shortcuts.close_console:  begin call ConsoleUI_Hide;       set_sfall_return(KEYCODE_THAT_DOES_NOTHING); return; end
     end
 
+    // Handle special keys
     if map_contains_key(data.config.SpecialKeys, string_keycode) then begin
         variable special_key_name = data.config.SpecialKeys[string_keycode];
         switch special_key_name begin
@@ -120,60 +126,20 @@ procedure on_keypress begin
             case "PGUP":  call on_pagedown;
             case "PGDN":  call on_pageup;
         end
+        set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
         return;
     end
 
-    // NOW REGULAR KEYS!
-
-    // else begin
-
-    //     variable console_data = get_console_data_array;
-
-    //     if console_data and console_data.visible then begin
-
-    //         if keycode == 1 then begin // Escape
-    //             call ConsoleUI_Hide;
-
-    //         end else begin
-    //             variable keymap = get_console_keymap_array;
-    //             variable str_keycode = sprintf("%s", keycode);
-
-    //             if map_contains_key(keymap.keys, str_keycode) then begin
-
-    //                 variable character;
-    //                 if is_shift_pressed then
-    //                     character = substr(keymap.keys[str_keycode], 1, 1);
-    //                 else
-    //                     character = substr(keymap.keys[str_keycode], 0, 1);
-                    
-    //                 call ConsoleUI_TypeText(character);
-
-    //             end else if map_contains_key(keymap.special_keys, str_keycode) then begin
-    //                 variable special_key = keymap.special_keys[str_keycode];
-    //                 switch special_key begin
-    //                     case "SPACE": call ConsoleUI_TypeText(" ");
-    //                     case "DEL": begin
-    //                         console_data.command_text = substr(console_data.command_text, 0, strlen(console_data.command_text) - 2);
-    //                         call ConsoleUI_Refresh;
-    //                     end
-    //                     case "TAB": display_msg("TODO TAB");
-    //                     case "ENTER": call ConsoleUI_ExecuteCurrentCommand;
-    //                     case "HOME": display_msg("TODO HOME");
-    //                     case "END": display_msg("TODO END");
-    //                     case "UP": display_msg("TODO UP");
-    //                     case "DOWN": display_msg("TODO DOWN");
-    //                     case "LEFT": display_msg("TODO LEFT");
-    //                     case "RIGHT": display_msg("TODO RIGHT");
-    //                     case "PGUP": display_msg("TODO PGUP");
-    //                     case "PGDN": display_msg("TODO PGDN");
-    //                     default: display_msg("DEFAULT SPECIAL KEY UNHANDLED " + keycode);
-    //                 end
-    //             end
-    //         end
-
-    //         set_sfall_return(255); // pick a key that does nothing!
-    //     end
-    // end
+    // Handle regular keys
+    if map_contains_key(data.config.Keys, string_keycode) then begin
+        variable character;
+        if is_shift_pressed then
+            character = substr(data.config.Keys[string_keycode], 1, 1);
+        else
+            character = substr(data.config.Keys[string_keycode], 0, 1);
+        set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
+        return;
+    end
 end
 
 procedure start begin
