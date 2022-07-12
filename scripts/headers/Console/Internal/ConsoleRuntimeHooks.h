@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Console/Internal/ConsoleRuntimeKeyboardBindings.h"
-
 procedure ConsoleRuntime_InitializeHooks begin
     register_hook_proc(HOOK_KEYPRESS, ConsoleRuntime_Hooks_Keypress);
     return true;

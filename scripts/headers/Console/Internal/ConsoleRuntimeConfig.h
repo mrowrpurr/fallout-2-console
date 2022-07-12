@@ -46,13 +46,15 @@ procedure ConsoleRuntime_InitializeConfig begin
 
     // Read .ini
     // We currently store the entire .ini in-memory on console data object.
-    data.config = {};
-    fix_array(data.config);
+    console_data.config = {
+        "ini_path": found_path
+    };
+    fix_array(console_data.config);
     variable section_name;
     foreach section_name in section_names begin
         variable section = get_ini_section(found_path, section_name);
         fix_array(section);
-        data.config[section_name] = section;
+        console_data.config[section_name] = section;
     end
 
     return true;

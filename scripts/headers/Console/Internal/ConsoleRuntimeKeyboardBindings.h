@@ -13,6 +13,10 @@
 // it only works in the *released* event (which we don't use)
 variable is_shift_pressed = false;
 
+procedure on_escape begin
+    call ConsoleUI_Hide;
+end
+
 procedure on_enter begin
     // call ConsoleUI_ExecuteCurrentCommand;
 end
@@ -70,36 +74,37 @@ procedure ConsoleRuntime_Hooks_Keypress begin
         return;
     end
 
-    // TODO - return unless the console is open
-    return;
-
     // The .ini configuration file uses string keys.
     // So get a string representation of the keycode.
     variable string_keycode = sprintf("%s", keycode);
 
     // Handle visibility toggle shortcuts
     switch string_keycode begin
-        case data.config.Shortcuts.toggle_console: begin
-            // call ConsoleUI_ToggleOpen;
+        case console_data.config.Shortcuts.toggle_console: begin
+            call ConsoleUI_Toggle;
             set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
             return;
         end
-        case data.config.Shortcuts.open_console: begin
-            // call ConsoleUI_Show;
+        case console_data.config.Shortcuts.open_console: begin
+            call ConsoleUI_Show;
             set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
             return;
         end
-        case data.config.Shortcuts.close_console: begin
-            // call ConsoleUI_Hide;
+        case console_data.config.Shortcuts.close_console: begin
+            call ConsoleUI_Hide;
             set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
             return;
         end
     end
 
+    // The following keys all require the console to be visible.
+    if not console_data.ui.visible then return;
+
     // Handle special keys
-    if map_contains_key(data.config.SpecialKeys, string_keycode) then begin
-        variable special_key_name = data.config.SpecialKeys[string_keycode];
+    if map_contains_key(console_data.config.SpecialKeys, string_keycode) then begin
+        variable special_key_name = console_data.config.SpecialKeys[string_keycode];
         switch special_key_name begin
+            case "ESC":   call on_escape;
             case "SPACE": call on_spacebar;
             case "DEL":   call on_delete;
             case "TAB":   call on_tab;
@@ -118,12 +123,12 @@ procedure ConsoleRuntime_Hooks_Keypress begin
     end
 
     // Handle regular keys
-    if map_contains_key(data.config.Keys, string_keycode) then begin
+    if map_contains_key(console_data.config.Keys, string_keycode) then begin
         variable character;
         if is_shift_pressed then
-            character = substr(data.config.Keys[string_keycode], 1, 1);
+            character = substr(console_data.config.Keys[string_keycode], 1, 1);
         else
-            character = substr(data.config.Keys[string_keycode], 0, 1);
+            character = substr(console_data.config.Keys[string_keycode], 0, 1);
         set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
         return;
     end

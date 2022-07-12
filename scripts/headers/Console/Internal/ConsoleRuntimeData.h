@@ -7,16 +7,13 @@
 //
 export variable __console_data;
 
-// Local variable for accessig __console_data using map/array syntax
+// Local variable for accessing __console_data using map/array syntax
 // which exported variables don't currently support.
-variable _console_data;
-
-// Throughout the runtime, simply access data easily as `data`.
-#define data _console_data
+variable console_data;
 
 procedure ConsoleRuntime_InitializeData begin
     __console_data = {};
     fix_array(__console_data);
-    _console_data = __console_data;
+    console_data = __console_data;
     return true;
 end
