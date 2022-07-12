@@ -18,8 +18,7 @@
 
 #define DEFAULT_CONSOLE_KEYCODE 41 // ~ key on US QWERTY
 
-variable is_ready;
-variable is_console_open;
+variable is_shift_pressed; // because key_pressed() doesn't capture shift on pressed, only released, but we need to use pressed to override the key press
 variable toggle_console_keycode = DEFAULT_CONSOLE_KEYCODE;
 
 procedure on_console_command_execution begin
@@ -35,15 +34,66 @@ end
 // int     arg2 - key VK code (very similar to ASCII codes)
 // int     ret0 - overrides the pressed key (a new key DX scancode or 0 for no override)
 procedure on_keypress begin
-    variable pressed = get_sfall_arg,
-             keycode = get_sfall_arg;
-    if pressed and keycode == toggle_console_keycode then begin
-        if is_console_open then begin
-            is_console_open = false;
-            call ConsoleHide;
-        end else begin
-            is_console_open = true;
-            call ConsoleShow;
+    variable pressed       = get_sfall_arg,
+             keycode       = get_sfall_arg;
+
+    if keycode == DIK_LSHIFT or keycode == DIK_RSHIFT then begin
+        is_shift_pressed = pressed;
+        return;
+    end
+
+    if pressed then begin        
+        if keycode == toggle_console_keycode then
+            call ConsoleToggleOpen;
+
+        else begin
+
+            variable console_data = get_console_data_array;
+
+            if console_data and console_data.visible then begin
+
+                if keycode == 1 then begin // Escape
+                    call ConsoleHide;
+
+                end else begin
+                    variable keymap = get_console_keymap_array;
+                    variable str_keycode = sprintf("%s", keycode);
+
+                    if map_contains_key(keymap.keys, str_keycode) then begin
+
+                        variable character;
+                        if is_shift_pressed then
+                            character = substr(keymap.keys[str_keycode], 1, 1);
+                        else
+                            character = substr(keymap.keys[str_keycode], 0, 1);
+                        
+                        call ConsoleTypeText(character);
+
+                    end else if map_contains_key(keymap.special_keys, str_keycode) then begin
+                        variable special_key = keymap.special_keys[str_keycode];
+                        switch special_key begin
+                            case "SPACE": call ConsoleTypeText(" ");
+                            case "DEL": begin
+                                console_data.text = substr(console_data.text, 0, strlen(console_data.text) - 2);
+                                call ConsoleRefresh;
+                            end
+                            case "TAB": display_msg("TODO TAB");
+                            case "ENTER": display_msg("TODO ENTER");
+                            case "HOME": display_msg("TODO HOME");
+                            case "END": display_msg("TODO END");
+                            case "UP": display_msg("TODO UP");
+                            case "DOWN": display_msg("TODO DOWN");
+                            case "LEFT": display_msg("TODO LEFT");
+                            case "RIGHT": display_msg("TODO RIGHT");
+                            case "PGUP": display_msg("TODO PGUP");
+                            case "PGDN": display_msg("TODO PGDN");
+                            default: display_msg("DEFAULT SPECIAL KEY UNHANDLED " + keycode);
+                        end
+                    end
+                end
+
+                set_sfall_return(255); // pick a key that does nothing!
+            end
         end
     end
 end
