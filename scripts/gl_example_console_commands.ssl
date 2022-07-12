@@ -2,20 +2,20 @@
 
 #include "sfall/sfall.h"
 
-procedure command_getcaps begin
-    variable cap_count = get_console_arg;
+// procedure command_getcaps begin
+//     variable cap_count = get_console_arg;
 
-    // default to the dude to start with
-    item_caps_adjust(dude_obj, atoi(cap_count));
-    
-    if cap_count > 0 then
-        call ConsolePrint(sprintf("Added %s caps", cap_count));
-    else
-        call ConsolePrint(sprintf("Removed %s caps", cap_count));
-end
+//     // default to the dude to start with
+//     item_caps_adjust(dude_obj, atoi(cap_count));
 
-procedure start begin
-    if game_loaded then begin
-       register_console_command("getcaps", command_getcaps); 
-    end
-end
+//     if cap_count > 0 then
+//         call ConsolePrint(sprintf("Added %s caps", cap_count));
+//     else
+//         call ConsolePrint(sprintf("Removed %s caps", cap_count));
+// end
+
+// procedure start begin
+//     if game_loaded then begin
+//        register_console_command("getcaps", command_getcaps); 
+//     end
+// end

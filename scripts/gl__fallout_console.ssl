@@ -9,24 +9,72 @@
     there is no need. Instead #include "Console.h".
 */
 
-#include "Console.h" // <--- header used by modders to register new console commands
-                     //      but we also include useful #defines and procs for
-                     //      interacting with the console, show/hiding it, etc!
+// FYI - exported variables do not support
+//       use of array or map syntax
+export variable CONSOLE_DATA;
+
+// Use this alias to CONSOLE_DATA
+// to use array or map syntax
+variable data;
+
+#define SFALL_HEADER_SFALL        "sfall/sfall.h"
+#define SFALL_HEADER_DEFINE_EXTRA "sfall/define_extra.h"
+#define SFALL_HEADER_LIB_STRINGS  "sfall/lib.strings.h"
+#define SFALL_HEADER_LIB_ARRAYS   "sfall/lib.arrays.h"
+
+#include "ConsoleBase.h"
 
 #include "sfall/dik.h"
-#include "sfall/sfall.h"
 
-#define DEFAULT_CONSOLE_KEYCODE 41 // ~ key on US QWERTY
+// UI script
+#define GLOBAL_SCRIPT_TYPE 1
 
-variable is_shift_pressed; // because key_pressed() doesn't capture shift on pressed, only released, but we need to use pressed to override the key press
-variable toggle_console_keycode = DEFAULT_CONSOLE_KEYCODE;
+// ~ key on US QWERTY
+#define DEFAULT_CONSOLE_KEYCODE 41
 
-procedure on_console_command_execution begin
+// Tracked whether SHIFT in currently pressed because key_pressed()
+// doesn't capture SHIFT in the *pressed* event (which we use)
+// it only works in the *released* event (which we don't use)
+variable is_shift_pressed = false;
 
+procedure on_enter begin
+    // call ConsoleUI_ExecuteCurrentCommand;
 end
 
-procedure on_console_command_registration begin
+procedure on_delete begin
+    // console_data.command_text = substr(console_data.command_text, 0, strlen(console_data.command_text) - 2);
+    // call ConsoleUI_Refresh;
+end
 
+procedure on_spacebar begin
+    // call ConsoleUI_TypeText(" ");
+end
+
+procedure on_pageup begin
+end
+
+procedure on_pagedown begin
+end
+
+procedure on_home begin
+end
+
+procedure on_end begin
+end
+
+procedure on_tab begin
+end
+
+procedure on_up begin
+end
+
+procedure on_down begin
+end
+
+procedure on_left begin
+end
+
+procedure on_right begin
 end
 
 // int     arg0 - event type: 1 - pressed, 0 - released
@@ -34,82 +82,123 @@ end
 // int     arg2 - key VK code (very similar to ASCII codes)
 // int     ret0 - overrides the pressed key (a new key DX scancode or 0 for no override)
 procedure on_keypress begin
-    variable pressed       = get_sfall_arg,
-             keycode       = get_sfall_arg;
+    variable pressed = get_sfall_arg,
+             keycode = get_sfall_arg;
 
+    // Track SHIFT
     if keycode == DIK_LSHIFT or keycode == DIK_RSHIFT then begin
         is_shift_pressed = pressed;
         return;
     end
 
-    if pressed then begin
+    // We only care about the *pressed* event, not *released*
+    if not pressed then return;
 
-        if keycode == toggle_console_keycode then
-            call ConsoleUI_ToggleOpen;
+    // The .ini configuration file uses string keys.
+    // So get a string representation of the keycode.
+    variable string_keycode = sprintf("%s", keycode);
 
-        else begin
-
-            variable console_data = get_console_data_array;
-
-            if console_data and console_data.visible then begin
-
-                if keycode == 1 then begin // Escape
-                    call ConsoleUI_Hide;
-
-                end else begin
-                    variable keymap = get_console_keymap_array;
-                    variable str_keycode = sprintf("%s", keycode);
-
-                    if map_contains_key(keymap.keys, str_keycode) then begin
-
-                        variable character;
-                        if is_shift_pressed then
-                            character = substr(keymap.keys[str_keycode], 1, 1);
-                        else
-                            character = substr(keymap.keys[str_keycode], 0, 1);
-                        
-                        call ConsoleUI_TypeText(character);
-
-                    end else if map_contains_key(keymap.special_keys, str_keycode) then begin
-                        variable special_key = keymap.special_keys[str_keycode];
-                        switch special_key begin
-                            case "SPACE": call ConsoleUI_TypeText(" ");
-                            case "DEL": begin
-                                console_data.command_text = substr(console_data.command_text, 0, strlen(console_data.command_text) - 2);
-                                call ConsoleUI_Refresh;
-                            end
-                            case "TAB": display_msg("TODO TAB");
-                            case "ENTER": call ConsoleUI_ExecuteCurrentCommand;
-                            case "HOME": display_msg("TODO HOME");
-                            case "END": display_msg("TODO END");
-                            case "UP": display_msg("TODO UP");
-                            case "DOWN": display_msg("TODO DOWN");
-                            case "LEFT": display_msg("TODO LEFT");
-                            case "RIGHT": display_msg("TODO RIGHT");
-                            case "PGUP": display_msg("TODO PGUP");
-                            case "PGDN": display_msg("TODO PGDN");
-                            default: display_msg("DEFAULT SPECIAL KEY UNHANDLED " + keycode);
-                        end
-                    end
-                end
-
-                set_sfall_return(255); // pick a key that does nothing!
-            end
-        end
+    switch string_keycode begin
+        case data.config.Shortcuts.toggle_console: begin call ConsoleUI_ToggleOpen; return; end
+        case data.config.Shortcuts.open_console:   begin call ConsoleUI_Show;       return; end
+        case data.config.Shortcuts.close_console:  begin call ConsoleUI_Hide;       return; end
     end
-end
 
-procedure load_config begin
-    variable console_shortcut = get_ini_setting(CONSOLE_INI_FILEPATH "|Shortcuts|iConsole");
-    if console_shortcut then toggle_console_keycode = console_shortcut;
+    if map_contains_key(data.config.SpecialKeys, string_keycode) then begin
+        variable special_key_name = data.config.SpecialKeys[string_keycode];
+        switch special_key_name begin
+            case "SPACE": call on_spacebar;
+            case "DEL":   call on_delete;
+            case "TAB":   call on_tab;
+            case "ENTER": call on_enter;
+            case "HOME":  call on_home;
+            case "END":   call on_end;
+            case "UP":    call on_up;
+            case "DOWN":  call on_down;
+            case "LEFT":  call on_left;
+            case "RIGHT": call on_right;
+            case "PGUP":  call on_pagedown;
+            case "PGDN":  call on_pageup;
+        end
+        return;
+    end
+
+    // NOW REGULAR KEYS!
+
+    // else begin
+
+    //     variable console_data = get_console_data_array;
+
+    //     if console_data and console_data.visible then begin
+
+    //         if keycode == 1 then begin // Escape
+    //             call ConsoleUI_Hide;
+
+    //         end else begin
+    //             variable keymap = get_console_keymap_array;
+    //             variable str_keycode = sprintf("%s", keycode);
+
+    //             if map_contains_key(keymap.keys, str_keycode) then begin
+
+    //                 variable character;
+    //                 if is_shift_pressed then
+    //                     character = substr(keymap.keys[str_keycode], 1, 1);
+    //                 else
+    //                     character = substr(keymap.keys[str_keycode], 0, 1);
+                    
+    //                 call ConsoleUI_TypeText(character);
+
+    //             end else if map_contains_key(keymap.special_keys, str_keycode) then begin
+    //                 variable special_key = keymap.special_keys[str_keycode];
+    //                 switch special_key begin
+    //                     case "SPACE": call ConsoleUI_TypeText(" ");
+    //                     case "DEL": begin
+    //                         console_data.command_text = substr(console_data.command_text, 0, strlen(console_data.command_text) - 2);
+    //                         call ConsoleUI_Refresh;
+    //                     end
+    //                     case "TAB": display_msg("TODO TAB");
+    //                     case "ENTER": call ConsoleUI_ExecuteCurrentCommand;
+    //                     case "HOME": display_msg("TODO HOME");
+    //                     case "END": display_msg("TODO END");
+    //                     case "UP": display_msg("TODO UP");
+    //                     case "DOWN": display_msg("TODO DOWN");
+    //                     case "LEFT": display_msg("TODO LEFT");
+    //                     case "RIGHT": display_msg("TODO RIGHT");
+    //                     case "PGUP": display_msg("TODO PGUP");
+    //                     case "PGDN": display_msg("TODO PGDN");
+    //                     default: display_msg("DEFAULT SPECIAL KEY UNHANDLED " + keycode);
+    //                 end
+    //             end
+    //         end
+
+    //         set_sfall_return(255); // pick a key that does nothing!
+    //     end
+    // end
 end
 
 procedure start begin
     if game_loaded then begin
-        AddNamedHandler("_console_register_command_", on_console_command_registration);
-        AddNamedHandler("_console_command_run_", on_console_command_execution);
-        set_global_script_type(1); // 1 = UI script
-        call load_config;
+
+        // This is a UI script
+        // Run when the cursor is on the screen
+        set_global_script_type(GLOBAL_SCRIPT_TYPE);
+        
+        // This variable must be set
+        // first for ANYTHING to work!
+        CONSOLE_DATA = Console_Initialize;
+        data = CONSOLE_DATA;
+
+        // Pull Console.ini configuration data and keymaps
+        // into the in-memory CONSOLE_DATA
+        data.config = {};
+        fix_array(data.config);
+        variable ini_section_names = get_ini_sections(CONSOLE_INI_FILEPATH);
+        variable ini_section_name;
+        foreach ini_section_name in ini_section_names begin
+            data.config[ini_section_name] = get_ini_section(CONSOLE_INI_FILEPATH, ini_section_name);
+        end
+
+        // Hook into keypresses
         register_hook_proc(HOOK_KEYPRESS, on_keypress);
     end
 end
