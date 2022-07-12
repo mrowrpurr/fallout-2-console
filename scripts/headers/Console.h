@@ -38,37 +38,27 @@
 #define get_console_keymap_array             get_sfall_global_int(CONSOLE_KEYMAP_GLOBAL_SFALL_VAR_NAME)
 #define is_console_initialized               (get_console_data != 0)
 
-// TODO make this a macro
-procedure ConsolePrint(variable text) begin
-    variable console_data = get_console_data_array;
-    if console_data then begin
-        call array_push(console_data.display_text_lines, text);
-    end else
-        debug_msg("Cannot print to console, not initialized yet!");
-end
+procedure ConsolePrint(variable text);
+procedure ConsoleUI_Refresh;
 
-// procedure ConsoleSprintf(variable text, variable arg)
 
-procedure ConsoleExecuteCommand(variable command) begin
-    display_msg("EXEC " + command);
-    call ConsolePrint("I printed this! from exec");
-    call ConsolePrint("I printed this too! from exec");
-end
-
-procedure ConsoleUI_Show begin
-    display_msg("SHOW!");
-
+procedure Console_Initialize begin
     variable console_data = get_console_data_array;
 
     if not console_data then begin
         console_data = {
             "command_text": "",
             "visible": false,
-            "initialized": false
+            "initialized": false,
+            "arguments_text": "" // <----
         };
         set_sfall_global(CONSOLE_DATA_GLOBAL_SFALL_VAR_NAME, console_data);
         fix_array(console_data);
         
+        // Registry of command names
+        console_data.registered_command_names = [];
+        fix_array(console_data.registered_command_names);
+
         // History of commands. To be saved in .ini and can get to with UP (and we'll make CTRL-R eventually) 
         console_data.command_history = [];
         fix_array(console_data.command_history);
@@ -85,6 +75,56 @@ procedure ConsoleUI_Show begin
         keymap.special_keys = get_ini_section(CONSOLE_INI_FILEPATH, "SpecialKeys");
         fix_array(keymap.special_keys);
     end
+
+    return console_data;
+end
+
+procedure __Console_RegisterCommand(variable command_name) begin
+    variable console_data = Console_Initialize;
+    if scan_array(console_data.registered_command_names, command_name) != -1 then
+        return false; // Someone else already registered this command, sorry!
+    else begin
+        display_msg("REGISTER COMMAND: " + command_name);
+        call array_push(console_data.registered_command_names, command_name);
+        return true;
+    end
+end
+
+#define register_console_command(command_name, proc) \
+    if __Console_RegisterCommand(command_name) then AddNamedHandler("ConsoleCommand:" + command_name, proc)
+
+// TODO make this a macro
+procedure ConsolePrint(variable text) begin
+    variable console_data = get_console_data_array;
+    if console_data then begin
+        call array_push(console_data.display_text_lines, text);
+        call ConsoleUI_Refresh;
+    end else
+        debug_msg("Cannot print to console, not initialized yet!");
+end
+
+// procedure ConsoleSprintf(variable text, variable arg)
+
+procedure ConsoleExecuteCommand(variable command_name) begin
+    variable console_data = Console_Initialize;
+
+    display_msg("EXEC , here are the commands:");
+    display_array(console_data.registered_command_names);
+
+    if scan_array(console_data.registered_command_names, command_name) != -1 then begin
+        // Setup some variables to they can get the ARGUMENTS!
+        SignalNamed("ConsoleCommand:" + command_name);
+    end else begin
+        ///...
+        // ConsoleError(); // <--- TODO! RED!
+
+        // MAKE THIS A MACRO:
+        call ConsolePrint("Command not found: " + command_name); // <--- TODO! RED!
+    end
+end
+
+procedure ConsoleUI_Show begin
+    variable console_data = Console_Initialize;
 
     if console_data.initialized then begin
         if not console_data.visible then begin
