@@ -31,13 +31,8 @@
         #define SFALL_HEADER_LIB_STRINGS  "sfall_headers/lib.strings.h"
         #define SFALL_HEADER_LIB_ARRAYS   "sfall_headers/lib.arrays.h"
 
-        // For "ConsoleBase.h" to work, it requires importing console data.
-        // You do not need to manually do this when including "Console.h"
-        // This variable is exported from gl__fallout_console.int
-        import variable CONSOLE_DATA;
-
-        // Include the base shared header for the console
-        #include "ConsoleBase.h"
+        // Include Console/Console which allows you to set these headers yourself.
+        #include "Console/Console.h"
 
 */
 
@@ -46,6 +41,4 @@
 #define SFALL_HEADER_LIB_STRINGS  "sfall/lib.strings.h"
 #define SFALL_HEADER_LIB_ARRAYS   "sfall/lib.arrays.h"
 
-import variable CONSOLE_DATA;
-
-#include "ConsoleBase.h"
+#include "Console/Console.h"
