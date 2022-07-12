@@ -1,0 +1,64 @@
+/*
+    Global script for the Fallout 2 ~ console by Mrowr Purr
+
+    This must run before all other scripts so that it
+    can register the handler for `register_console_proc`
+    to work when called from other mods.
+
+    Do not try to include this script in yours mods,
+    there is no need. Instead #include "Console.h".
+*/
+
+#include "Console.h" // <--- header used by modders to register new console commands
+                     //      but we also include useful #defines and procs for
+                     //      interacting with the console, show/hiding it, etc!
+
+#include "sfall/dik.h"
+#include "sfall/sfall.h"
+
+#define DEFAULT_CONSOLE_KEYCODE 41 // ~ key on US QWERTY
+
+variable is_ready;
+variable is_console_open;
+variable toggle_console_keycode = DEFAULT_CONSOLE_KEYCODE;
+
+procedure on_console_command_execution begin
+
+end
+
+procedure on_console_command_registration begin
+
+end
+
+// int     arg0 - event type: 1 - pressed, 0 - released
+// int     arg1 - key DX scancode
+// int     arg2 - key VK code (very similar to ASCII codes)
+// int     ret0 - overrides the pressed key (a new key DX scancode or 0 for no override)
+procedure on_keypress begin
+    variable pressed = get_sfall_arg,
+             keycode = get_sfall_arg;
+    if pressed and keycode == toggle_console_keycode then begin
+        if is_console_open then begin
+            is_console_open = false;
+            call ConsoleHide;
+        end else begin
+            is_console_open = true;
+            call ConsoleShow;
+        end
+    end
+end
+
+procedure load_config begin
+    variable console_shortcut = get_ini_setting(CONSOLE_INI_FILEPATH "|Shortcuts|iConsole");
+    if console_shortcut then toggle_console_keycode = console_shortcut;
+end
+
+procedure start begin
+    if game_loaded then begin
+        AddNamedHandler("_console_register_command_", on_console_command_registration);
+        AddNamedHandler("_console_command_run_", on_console_command_execution);
+        set_global_script_type(1); // 1 = UI script
+        call load_config;
+        register_hook_proc(HOOK_KEYPRESS, on_keypress);
+    end
+end
