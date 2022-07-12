@@ -42,9 +42,10 @@ procedure on_keypress begin
         return;
     end
 
-    if pressed then begin        
+    if pressed then begin
+
         if keycode == toggle_console_keycode then
-            call ConsoleToggleOpen;
+            call ConsoleUI_ToggleOpen;
 
         else begin
 
@@ -53,7 +54,7 @@ procedure on_keypress begin
             if console_data and console_data.visible then begin
 
                 if keycode == 1 then begin // Escape
-                    call ConsoleHide;
+                    call ConsoleUI_Hide;
 
                 end else begin
                     variable keymap = get_console_keymap_array;
@@ -67,18 +68,18 @@ procedure on_keypress begin
                         else
                             character = substr(keymap.keys[str_keycode], 0, 1);
                         
-                        call ConsoleTypeText(character);
+                        call ConsoleUI_TypeText(character);
 
                     end else if map_contains_key(keymap.special_keys, str_keycode) then begin
                         variable special_key = keymap.special_keys[str_keycode];
                         switch special_key begin
-                            case "SPACE": call ConsoleTypeText(" ");
+                            case "SPACE": call ConsoleUI_TypeText(" ");
                             case "DEL": begin
-                                console_data.text = substr(console_data.text, 0, strlen(console_data.text) - 2);
-                                call ConsoleRefresh;
+                                console_data.command_text = substr(console_data.command_text, 0, strlen(console_data.command_text) - 2);
+                                call ConsoleUI_Refresh;
                             end
                             case "TAB": display_msg("TODO TAB");
-                            case "ENTER": display_msg("TODO ENTER");
+                            case "ENTER": call ConsoleUI_ExecuteCurrentCommand;
                             case "HOME": display_msg("TODO HOME");
                             case "END": display_msg("TODO END");
                             case "UP": display_msg("TODO UP");
