@@ -78,6 +78,9 @@ procedure ConsoleUI_Render begin
     if len_array(console_data.ui.output_text_lines) > 0 then begin
         SetTextColor(CONSOLE_RGB_COLOR_WHITE);
         variable y = CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET + CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT;
+        // Make it auto-scroll down! and only render X lines!
+        // Get the last CONSOLE_COMMAND_OUTPUT_MAX_LINE_COUNT in the array.
+        // Go backwards in a for()
         variable line;
         foreach line in (console_data.ui.output_text_lines) begin
             Format(

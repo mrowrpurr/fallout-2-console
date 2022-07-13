@@ -20,13 +20,33 @@ procedure on_escape begin
 end
 
 procedure on_enter begin
-    // TODO PUT THIS SOMEWHERE:
-    // TODO ARGUMENTS
-    variable command_name = console_data.ui.command_entry_text;
+    variable command_text = console_data.ui.command_entry_text;
     console_data.ui.command_entry_text = "";
-    PrintConsole(CONSOLE_EXECUTED_COMMAND_PROMPT_CHARACTER + " " + command_name);
+
+    if strlen(command_text) < 1 then return;
+
+    variable command_parts = string_split(command_text, " ");
+    variable command_name = command_parts[0];
+    call array_cut(command_parts, 0, 1);
+
+    PrintConsole(CONSOLE_EXECUTED_COMMAND_PROMPT_CHARACTER + " " + command_text);
+
     if strlen(command_name) > 0 and does_console_command_exist(command_name) then begin
+        // Hold onto the command line arguments
+        fix_array(command_parts);
+
+        // if there was a previous arguments array, free it
+        if console_data.most_recent_command_line_arguments then
+            free_array(console_data.most_recent_command_line_arguments);
+        
+        // set the arguments for sharing with the console command
+        console_data.most_recent_command_line_arguments = command_parts;
+
+        debug_msg("RECENT ARGS: " + debug_array_str(console_data.most_recent_command_line_arguments));
+        
+        // tell the console command that it's time to run!
         SignalNamed(CONSOLE_COMMAND_NAMED_HANDLER_PREFIX + command_name);
+
     end else begin
         // Make this PrintError - red
         PrintConsole(sprintf("Command not found: %s", command_name));
