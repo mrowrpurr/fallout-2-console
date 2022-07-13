@@ -1,0 +1,10 @@
+- [ ] Pause/Unpause game on open
+- [ ] A bit taller?
+- [ ] Try using window scaling to make font smaller
+- [ ] selecttarget
+- [ ] dude. or player. to set target to the dude
+- [ ] cursor. for what's under the cursor
+- [ ] critter. for critter under the cursor
+- [ ] target. for the selected target
+- [ ] allow third party X. prefix extensions
+- [ ] events.h for signal names & send signals on console open, console close, and command execution
