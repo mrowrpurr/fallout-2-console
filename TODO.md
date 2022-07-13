@@ -1,6 +1,5 @@
 - [ ] Pause/Unpause game on open
 - [ ] A bit taller?
-- [ ] Try using window scaling to make font smaller
 - [ ] selecttarget
 - [ ] dude. or player. to set target to the dude
 - [ ] cursor. for what's under the cursor
