@@ -15,6 +15,11 @@
 #define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_FONT        101
 #define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT 12
 #define CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE           justifyleft
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_X             40
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_Y             35
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH         562
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT        118
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR         0.016, 0.047, 0.0
 #define CONSOLE_RGB_COLOR_GREEN                        0.0, 1.0, 0.0
 #define CONSOLE_RGB_COLOR_WHITE                        1.0, 1.0, 1.0
 #define CONSOLE_RGB_COLOR_TEXT_AREA_BACKGROUND_COLOR   1.0, 1.0, 1.0
@@ -51,13 +56,11 @@ procedure ConsoleUI_Render begin
     if console_window_instaniated then begin
         SelectWin(CONSOLE_WINDOW_NAME);
         FillRect(
-            40,
-            35,
-            562,
-            118,
-            0.016,
-            0.047,
-            0.0
+            CONSOLE_COMMAND_ENTRY_BACKGROUND_X,
+            CONSOLE_COMMAND_ENTRY_BACKGROUND_Y,
+            CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH,
+            CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT,
+            CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR
         );
     end else begin
         console_window_instaniated = true; 
