@@ -1,6 +1,3 @@
-- [x] Pause/Unpause game on open
-    - [ ] can we bring the mouse back???
-- [x] A bit taller?
 - [ ] selecttarget
 - [ ] dude. or player. to set target to the dude
 - [ ] cursor. for what's under the cursor
