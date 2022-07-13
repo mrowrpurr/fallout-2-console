@@ -2,7 +2,7 @@
 
 #define CONSOLE_WINDOW_NAME                  "ConsoleWindow"
 #define CONSOLE_BACKGROUND_FRM               "art\\intrface\\Console\\ConsoleBackground.frm"
-#define CONSOLE_BACKGROUND_WIDTH             444
+#define CONSOLE_BACKGROUND_WIDTH             640
 #define CONSOLE_BACKGROUND_HEIGHT            206
 #define CONSOLE_TEXT_FONT                    101
 
@@ -22,11 +22,21 @@ procedure ConsoleUI_InitializeData begin
     console_data.ui.output_text_lines = [];
     fix_array(console_data.ui.output_text_lines);
 
+    console_data.ui.screen_width  = get_screen_width;
+    console_data.ui.screen_height = get_screen_height;
+
+    if not console_data.ui.screen_width  then console_data.ui.screen_width  = 640;
+    if not console_data.ui.screen_height then console_data.ui.screen_height = 480;
+
+    // Position at the bottom of the screen by default
+    console_data.ui.x = 0;
+    console_data.ui.y = console_data.ui.screen_height - CONSOLE_BACKGROUND_HEIGHT;
+
     return true;
 end
 
 procedure ConsoleUI_Render begin
-    create_win_flag(CONSOLE_WINDOW_NAME, 0, 0, CONSOLE_BACKGROUND_WIDTH, CONSOLE_BACKGROUND_HEIGHT, WIN_FLAG_HIDDEN + WIN_FLAG_MOVEONTOP);
+    create_win_flag(CONSOLE_WINDOW_NAME, console_data.ui.x, console_data.ui.y, CONSOLE_BACKGROUND_WIDTH, CONSOLE_BACKGROUND_HEIGHT, WIN_FLAG_HIDDEN + WIN_FLAG_MOVEONTOP);
     SelectWin(CONSOLE_WINDOW_NAME);
     draw_image(CONSOLE_BACKGROUND_FRM, 0, 0, 0, true);
 end
