@@ -19,6 +19,14 @@ end
 
 procedure on_enter begin
     // call ConsoleUI_ExecuteCurrentCommand;
+
+    // TODO PUT THIS SOMEWHERE:
+    // TODO ARGUMENTS
+    variable command_name = console_data.ui.command_entry_text;
+    console_data.ui.command_entry_text = "";
+    display_msg("SIGNAL '" + CONSOLE_COMMAND_NAMED_HANDLER_PREFIX + command_name + "'");
+    if strlen(command_name) > 0 and scan_array(console_data.registered_console_command_names, command_name) != -1 then
+        SignalNamed(CONSOLE_COMMAND_NAMED_HANDLER_PREFIX + command_name);
 end
 
 procedure on_delete begin

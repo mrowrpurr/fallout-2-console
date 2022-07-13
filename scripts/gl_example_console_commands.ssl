@@ -1,8 +1,8 @@
 #include "Console.h"
 
-#include "sfall/sfall.h"
-
-// procedure command_getcaps begin
+procedure command_getcaps begin
+    ConsolePrint("Hi from getcaps");
+    
 //     variable cap_count = get_console_arg;
 
 //     // default to the dude to start with
@@ -12,10 +12,11 @@
 //         call ConsolePrint(sprintf("Added %s caps", cap_count));
 //     else
 //         call ConsolePrint(sprintf("Removed %s caps", cap_count));
-// end
+end
 
-// procedure start begin
-//     if game_loaded then begin
-//        register_console_command("getcaps", command_getcaps); 
-//     end
-// end
+procedure start begin
+    if game_loaded then begin
+        display_msg("LOAD GET CAPS!");    
+        register_console_command("getcaps", command_getcaps); 
+    end
+end

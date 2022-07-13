@@ -10,10 +10,10 @@
 #define CONSOLE_BACKGROUND_HEIGHT                      206
 #define CONSOLE_COMMAND_ENTRY_PROMPT_X_OFFSET          46
 #define CONSOLE_COMMAND_ENTRY_TEXT_X_OFFSET            57
-#define CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET            40
+#define CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET            (40)
 #define CONSOLE_COMMAND_ENTRY_TEXT_WIDTH               548 // 640 - (x offset * 2)
 #define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_FONT        101
-#define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT 12
+#define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT (12)
 #define CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE           justifyleft
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_X             40
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_Y             35
@@ -29,30 +29,8 @@
 variable is_console_busy;
 variable console_window_instaniated;
 
-procedure ConsoleUI_InitializeData begin
-    console_data.ui = {
-        "visible": false,
-        "command_entry_text": ""
-    };
-    fix_array(console_data.ui);
-
-    console_data.ui.output_text_lines = [];
-    fix_array(console_data.ui.output_text_lines);
-
-    console_data.ui.screen_width  = get_screen_width;
-    console_data.ui.screen_height = get_screen_height;
-
-    if not console_data.ui.screen_width  then console_data.ui.screen_width  = 640;
-    if not console_data.ui.screen_height then console_data.ui.screen_height = 480;
-
-    // Position at the bottom of the screen by default
-    console_data.ui.x = 0;
-    console_data.ui.y = console_data.ui.screen_height - CONSOLE_BACKGROUND_HEIGHT;
-
-    return true;
-end
-
 procedure ConsoleUI_Render begin
+    display_msg("RENDER");
     if console_window_instaniated then begin
         SelectWin(CONSOLE_WINDOW_NAME);
         FillRect(
@@ -95,6 +73,23 @@ procedure ConsoleUI_Render begin
             CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE
         );
     end
+    if len_array(console_data.ui.output_text_lines) > 0 then begin
+        display_msg("SHOW OUTPUT TEXT LINES");
+        SetTextColor(CONSOLE_RGB_COLOR_WHITE);
+        variable y = CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET + CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT;
+        variable line;
+        foreach line in (console_data.ui.output_text_lines) begin
+            Format(
+                line,
+                CONSOLE_COMMAND_ENTRY_TEXT_X_OFFSET,
+                y,
+                CONSOLE_COMMAND_ENTRY_TEXT_WIDTH,
+                CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT,
+                CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE
+            );
+            y += CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT;
+        end
+    end
     ShowWin;
 end
 
@@ -131,4 +126,29 @@ procedure ConsoleUI_TypeKey(variable character) begin
         ConsoleUI_CommandEntryText_Append(character);
         call ConsoleUI_Render;
     end
+end
+
+procedure ConsoleUI_Initialize begin
+    console_data.ui = {
+        "visible": false,
+        "command_entry_text": ""
+    };
+    fix_array(console_data.ui);
+
+    console_data.ui.output_text_lines = [];
+    fix_array(console_data.ui.output_text_lines);
+
+    console_data.ui.screen_width  = get_screen_width;
+    console_data.ui.screen_height = get_screen_height;
+
+    if not console_data.ui.screen_width  then console_data.ui.screen_width  = 640;
+    if not console_data.ui.screen_height then console_data.ui.screen_height = 480;
+
+    // Position at the bottom of the screen by default
+    console_data.ui.x = 0;
+    console_data.ui.y = console_data.ui.screen_height - CONSOLE_BACKGROUND_HEIGHT;
+
+    AddNamedHandler(CONSOLE_UI_RENDER_NAMED_HANDLER_NAME, ConsoleUI_Render);
+
+    return true;
 end
