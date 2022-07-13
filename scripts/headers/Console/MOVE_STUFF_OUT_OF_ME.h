@@ -1,5 +1,4 @@
-
-
+// get_text_width
 
 procedure Console_Initialize begin
     variable console_data = get_sfall_global_int(CONSOLE_SFALL_GLOBAL_VARIABLE_NAME);
@@ -94,15 +93,6 @@ procedure ConsoleExecuteCommand(variable command_name, variable arguments) begin
 end
 
 procedure ConsoleUI_Show begin
-    variable console_data = Console_Initialize;
-
-    if console_data.ui_initialized then begin
-        if not console_data.visible then begin
-            show_window(CONSOLE_WINDOW_NAME);
-            console_data.visible = true;
-        end
-
-    end else begin
         console_data.ui_initialized = true;
         console_data.visible = true;
 
@@ -115,7 +105,6 @@ procedure ConsoleUI_Show begin
         Format("$", 46, 40, 300, 12, justifyleft);
 
         show_window(CONSOLE_WINDOW_NAME);
-    end
 end
 
 procedure ConsoleUI_Hide begin

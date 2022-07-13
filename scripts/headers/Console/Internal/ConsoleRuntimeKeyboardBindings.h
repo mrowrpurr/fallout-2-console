@@ -22,12 +22,16 @@ procedure on_enter begin
 end
 
 procedure on_delete begin
-    // console_data.command_text = substr(console_data.command_text, 0, strlen(console_data.command_text) - 2);
-    // call ConsoleUI_Refresh;
+    console_data.console_data.ui.command_entry_text = substr(
+        console_data.ui.command_entry_text,
+        0,
+        strlen(console_data.ui.command_entry_text) - 2
+    );
+    call ConsoleUI_Refresh;
 end
 
 procedure on_spacebar begin
-    // call ConsoleUI_TypeText(" ");
+    call ConsoleUI_TypeKey(" ");
 end
 
 procedure on_pageup begin
@@ -129,6 +133,7 @@ procedure ConsoleRuntime_Hooks_Keypress begin
             character = substr(console_data.config.Keys[string_keycode], 1, 1);
         else
             character = substr(console_data.config.Keys[string_keycode], 0, 1);
+        call ConsoleUI_TypeKey(character);
         set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
         return;
     end
