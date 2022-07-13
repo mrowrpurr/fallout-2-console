@@ -22,11 +22,14 @@ procedure on_enter begin
 end
 
 procedure on_delete begin
-    console_data.console_data.ui.command_entry_text = substr(
-        console_data.ui.command_entry_text,
-        0,
-        strlen(console_data.ui.command_entry_text) - 2
-    );
+    variable length = strlen(console_data.ui.command_entry_text);
+    if length == 1 then console_data.ui.command_entry_text = "";
+    else
+        console_data.ui.command_entry_text = substr(
+            console_data.ui.command_entry_text,
+            0,
+            strlen(console_data.ui.command_entry_text) - 1
+        );
     call ConsoleUI_Refresh;
 end
 

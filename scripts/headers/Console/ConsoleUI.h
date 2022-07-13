@@ -12,14 +12,10 @@
 #define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_FONT        101
 #define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT 12
 #define CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE           justifyleft
+#define CONSOLE_RGB_COLOR_GREEN                        0.0, 1.0, 0.0
+#define CONSOLE_RGB_COLOR_WHITE                        1.0, 1.0, 1.0
 #define ConsoleUI_CommandEntryText_Append(text)        console_data.ui.command_entry_text += text
 #define ConsoleUI_CommandEntryText_Clear()             console_data.ui.command_entry_text = ""
-
-// Try to make this work?
-// #define CONSOLE_COMMAND_ENTRY_FONT_COLOR     (0.0, 1.0, 0.0)
-// #define CONSOLE_COMMAND_OUTPUT_FONT_COLOR    (1.0, 1.0, 1.0)
-
-// NEXT - MAKE COMMAND WORK AGAIN :)
 
 variable is_console_busy;
 
@@ -50,8 +46,8 @@ procedure ConsoleUI_Render begin
     create_win_flag(CONSOLE_WINDOW_NAME, console_data.ui.x, console_data.ui.y, CONSOLE_BACKGROUND_WIDTH, CONSOLE_BACKGROUND_HEIGHT, WIN_FLAG_HIDDEN + WIN_FLAG_MOVEONTOP);
     SelectWin(CONSOLE_WINDOW_NAME);
     draw_image(CONSOLE_BACKGROUND_FRM, 0, 0, 0, true);
-    SetTextColor(1.0, 1.0, 0.0);
     SetFont(CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_FONT);
+    SetTextColor(CONSOLE_RGB_COLOR_GREEN);
     Format(
         CONSOLE_PROMPT_CHARACTER,
         CONSOLE_COMMAND_ENTRY_PROMPT_X_OFFSET,
