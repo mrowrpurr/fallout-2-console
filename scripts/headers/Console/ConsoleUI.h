@@ -19,7 +19,7 @@
 #define CONSOLE_COMMAND_ENTRY_TEXT_WIDTH               548 // todo determine
 #define CONSOLE_COMMAND_OUTPUT_TEXT_X_OFFSET           45
 #define CONSOLE_COMMAND_OUTPUT_TEXT_WIDTH              562
-#define CONSOLE_COMMAND_OUTPUT_MAX_LINE_COUNT          7
+#define CONSOLE_COMMAND_OUTPUT_MAX_LINE_COUNT          11
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_X             40
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_Y             35
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH         562
@@ -107,6 +107,7 @@ procedure ConsoleUI_Show begin
         show_window(CONSOLE_WINDOW_NAME);
         console_data.ui.visible = true;
         is_console_busy = false;
+        SendConsoleEvent(CONSOLE_EVENT_ON_OPEN);
     end
 end
 
@@ -117,6 +118,7 @@ procedure ConsoleUI_Hide begin
         hide_window(CONSOLE_WINDOW_NAME);
         console_data.ui.visible = false;
         is_console_busy = false;
+        SendConsoleEvent(CONSOLE_EVENT_ON_CLOSE);
     end
 end
 
@@ -154,7 +156,9 @@ procedure ConsoleUI_Initialize begin
     console_data.ui.x = 0;
     console_data.ui.y = console_data.ui.screen_height - CONSOLE_BACKGROUND_HEIGHT;
 
-    AddNamedHandler(CONSOLE_UI_RENDER_NAMED_HANDLER_NAME, ConsoleUI_Render);
+    RegisterConsoleEventProc(CONSOLE_EVENT_RENDER, ConsoleUI_Render);
+    RegisterConsoleEventProc(CONSOLE_EVENT_OPEN,   ConsoleUI_Show);
+    RegisterConsoleEventProc(CONSOLE_EVENT_CLOSE,  ConsoleUI_Hide);
 
     return true;
 end

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Console/ConsoleEvents.h"
 #include "Console/ConsoleIncludes.h"
 #include "Console/ConsoleDefines.h"
 #include "Console/ConsoleData.h"

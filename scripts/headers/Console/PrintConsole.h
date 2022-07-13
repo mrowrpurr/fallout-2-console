@@ -29,9 +29,9 @@ procedure __ConsolePrint(variable text) begin
             call array_push(console_data.ui.output_text_lines, line);
         end
         free_array(lines_to_add);
-        SignalNamed(CONSOLE_UI_RENDER_NAMED_HANDLER_NAME);
+        SendConsoleEvent(CONSOLE_EVENT_RENDER);
     end else begin
         call array_push(console_data.ui.output_text_lines, text);
-        SignalNamed(CONSOLE_UI_RENDER_NAMED_HANDLER_NAME);
+        SendConsoleEvent(CONSOLE_EVENT_RENDER);
     end
 end

@@ -3,12 +3,10 @@
 
 procedure command_clear begin
     console_data.ui.output_text_lines = 0;
-    SignalNamed(CONSOLE_UI_RENDER_NAMED_HANDLER_NAME);
+    SendConsoleEvent(CONSOLE_EVENT_RENDER);
 end
 
 procedure command_getcaps begin
-
-
 
 //     variable cap_count = get_console_arg;
 

@@ -9,5 +9,4 @@
 //     editors of everyone creating a console command
 //  2. Prefix every define with CONSOLE_
 
-#define CONSOLE_UI_RENDER_NAMED_HANDLER_NAME "RenderConsoleWindow"
 #define CONSOLE_COMMAND_NAMED_HANDLER_PREFIX "ConsoleCommand:"
