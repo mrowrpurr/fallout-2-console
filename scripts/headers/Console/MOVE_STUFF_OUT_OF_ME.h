@@ -11,7 +11,7 @@ end
 
 
 // TODO make this a macro
-procedure ConsolePrint(variable text) begin
+procedure PrintConsole(variable text) begin
     variable console_data = get_console_data_array;
     if console_data then begin
         call array_push(console_data.display_text_lines, text);
@@ -37,7 +37,7 @@ procedure ConsoleExecuteCommand(variable command_name, variable arguments) begin
         // ConsoleError(); // <--- TODO! RED!
 
         // MAKE THIS A MACRO:
-        call ConsolePrint("Command not found: " + command_name); // <--- TODO! RED!
+        call PrintConsole("Command not found: " + command_name); // <--- TODO! RED!
     end
 end
 

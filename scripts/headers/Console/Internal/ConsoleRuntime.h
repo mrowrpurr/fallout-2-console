@@ -7,6 +7,8 @@
 #include "Console/Internal/ConsoleRuntimeData.h"
 #include "Console/Internal/ConsoleRuntimeConfig.h"
 #include "Console/ConsoleDefines.h"
+#include "Console/ConsoleCommandRegistry.h"
+#include "Console/PrintConsole.h"
 #include "Console/ConsoleUI.h"
 #include "Console/Internal/ConsoleRuntimeKeyboardBindings.h"
 #include "Console/Internal/ConsoleRuntimeHooks.h"

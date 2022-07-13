@@ -8,13 +8,16 @@
 #define CONSOLE_PROMPT_CHARACTER                       "$"
 #define CONSOLE_BACKGROUND_WIDTH                       640
 #define CONSOLE_BACKGROUND_HEIGHT                      206
+#define CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT            (14)
+#define CONSOLE_COMMAND_DEFAULT_FONT                   101
+#define CONSOLE_COMMAND_TEXT_JUSTIFY                   justifyleft
 #define CONSOLE_COMMAND_ENTRY_PROMPT_X_OFFSET          46
 #define CONSOLE_COMMAND_ENTRY_TEXT_X_OFFSET            57
 #define CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET            (40)
-#define CONSOLE_COMMAND_ENTRY_TEXT_WIDTH               548 // 640 - (x offset * 2)
-#define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_FONT        101
-#define CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT (12)
-#define CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE           justifyleft
+#define CONSOLE_COMMAND_ENTRY_TEXT_WIDTH               548 // todo determine
+#define CONSOLE_COMMAND_OUTPUT_TEXT_X_OFFSET           45
+#define CONSOLE_COMMAND_OUTPUT_TEXT_WIDTH              562
+#define CONSOLE_COMMAND_OUTPUT_MAX_LINE_COUNT          7
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_X             40
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_Y             35
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH         562
@@ -30,7 +33,6 @@ variable is_console_busy;
 variable console_window_instaniated;
 
 procedure ConsoleUI_Render begin
-    display_msg("RENDER");
     if console_window_instaniated then begin
         SelectWin(CONSOLE_WINDOW_NAME);
         FillRect(
@@ -53,15 +55,15 @@ procedure ConsoleUI_Render begin
         SelectWin(CONSOLE_WINDOW_NAME);
         draw_image(CONSOLE_BACKGROUND_FRM, 0, 0, 0, true);
     end
-    SetFont(CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_FONT);
+    SetFont(CONSOLE_COMMAND_DEFAULT_FONT);
     SetTextColor(CONSOLE_RGB_COLOR_GREEN);
     Format(
         CONSOLE_PROMPT_CHARACTER,
         CONSOLE_COMMAND_ENTRY_PROMPT_X_OFFSET,
         CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET,
         CONSOLE_COMMAND_ENTRY_TEXT_WIDTH,
-        CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT,
-        CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE
+        CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT,
+        CONSOLE_COMMAND_TEXT_JUSTIFY
     );
     if console_data.ui.command_entry_text then begin
         Format(
@@ -69,25 +71,24 @@ procedure ConsoleUI_Render begin
             CONSOLE_COMMAND_ENTRY_TEXT_X_OFFSET,
             CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET,
             CONSOLE_COMMAND_ENTRY_TEXT_WIDTH,
-            CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT,
-            CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE
+            CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT,
+            CONSOLE_COMMAND_TEXT_JUSTIFY
         );
     end
     if len_array(console_data.ui.output_text_lines) > 0 then begin
-        display_msg("SHOW OUTPUT TEXT LINES");
         SetTextColor(CONSOLE_RGB_COLOR_WHITE);
-        variable y = CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET + CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT;
+        variable y = CONSOLE_COMMAND_ENTRY_TEXT_Y_OFFSET + CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT;
         variable line;
         foreach line in (console_data.ui.output_text_lines) begin
             Format(
                 line,
-                CONSOLE_COMMAND_ENTRY_TEXT_X_OFFSET,
+                CONSOLE_COMMAND_OUTPUT_TEXT_X_OFFSET,
                 y,
-                CONSOLE_COMMAND_ENTRY_TEXT_WIDTH,
-                CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT,
-                CONSOLE_COMMAND_ENTRY_TEXT_ATTRIBUTE
+                CONSOLE_COMMAND_OUTPUT_TEXT_WIDTH,
+                CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT,
+                CONSOLE_COMMAND_TEXT_JUSTIFY
             );
-            y += CONSOLE_COMMAND_ENTRY_TEXT_DEFAULT_LINE_HEIGHT;
+            y += CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT;
         end
     end
     ShowWin;
