@@ -30,7 +30,7 @@ procedure on_delete begin
             0,
             strlen(console_data.ui.command_entry_text) - 1
         );
-    call ConsoleUI_Refresh;
+    call ConsoleUI_Render;
 end
 
 procedure on_spacebar begin

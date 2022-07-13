@@ -66,7 +66,7 @@ procedure ConsolePrint(variable text) begin
     variable console_data = get_console_data_array;
     if console_data then begin
         call array_push(console_data.display_text_lines, text);
-        call ConsoleUI_Refresh;
+        call ConsoleUI_Render;
     end else
         debug_msg("Cannot print to console, not initialized yet!");
 end
@@ -124,7 +124,7 @@ procedure ConsoleUI_ToggleOpen begin
         call ConsoleUI_Show;
 end
 
-procedure ConsoleUI_Refresh begin
+procedure ConsoleUI_Render begin
     variable console_data = get_console_data_array;
     if console_data and console_data.visible then begin
         hide_window(CONSOLE_WINDOW_NAME);
@@ -168,13 +168,13 @@ procedure ConsoleUI_ExecuteCurrentCommand begin
         command_text = substr(command_text, 0, command_space);
     end
     call ConsoleExecuteCommand(command, arguments);
-    call ConsoleUI_Refresh;
+    call ConsoleUI_Render;
 end
 
 procedure ConsoleUI_TypeText(variable character) begin
     variable console_data = get_console_data_array;
     if console_data and console_data.visible then begin
         console_data.command_text += character;
-        call ConsoleUI_Refresh;
+        call ConsoleUI_Render;
     end
 end
