@@ -9,6 +9,7 @@ end
 procedure command_getcaps begin
 
 
+
 //     variable cap_count = get_console_arg;
 
 //     // default to the dude to start with

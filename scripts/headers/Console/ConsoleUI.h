@@ -3,11 +3,13 @@
 // Useful for getting hex --> float
 // https://corecoding.com/utilities/rgb-or-hex-to-float.php
 
+// 54 difference
+
 #define CONSOLE_WINDOW_NAME                            "ConsoleWindow"
 #define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\ConsoleBackground.frm"
 #define CONSOLE_PROMPT_CHARACTER                       "$"
 #define CONSOLE_BACKGROUND_WIDTH                       640
-#define CONSOLE_BACKGROUND_HEIGHT                      206
+#define CONSOLE_BACKGROUND_HEIGHT                      260
 #define CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT            (14)
 #define CONSOLE_COMMAND_DEFAULT_FONT                   101
 #define CONSOLE_COMMAND_TEXT_JUSTIFY                   justifyleft
@@ -21,8 +23,8 @@
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_X             40
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_Y             35
 #define CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH         562
-#define CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT        118
-#define CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR         0.016, 0.047, 0.0
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT        172
+#define CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR         0.0, 1.0, 1.0 // 0.016, 0.047, 0.0
 #define CONSOLE_RGB_COLOR_GREEN                        0.0, 1.0, 0.0
 #define CONSOLE_RGB_COLOR_WHITE                        1.0, 1.0, 1.0
 #define CONSOLE_RGB_COLOR_TEXT_AREA_BACKGROUND_COLOR   1.0, 1.0, 1.0
