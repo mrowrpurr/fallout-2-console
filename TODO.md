@@ -1,3 +1,8 @@
+# TODO
+
+- [ ] Update console command execution to work via global timers AND signals
+      with the idea of turning off the global timers once sfall is fixed
+
 - [ ] selecttarget
 - [ ] dude. or player. to set target to the dude
 - [ ] cursor. for what's under the cursor
@@ -11,3 +16,8 @@
 - [ ] some handy dandy standard terminal (emacs) shortcuts, e.g. ctrl-a ctrl-w
 - [ ] .ini files with names of EVERYTHING extracted from files (NOT stored in memory)
 - [ ] search command (need to get the PID for anything, like the hex in Skyrim)
+- [ ] up and down go thru the command history
+
+## Commands
+
+- [ ] givecaps

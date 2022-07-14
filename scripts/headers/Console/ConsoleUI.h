@@ -3,8 +3,6 @@
 // Useful for getting hex --> float
 // https://corecoding.com/utilities/rgb-or-hex-to-float.php
 
-// 54 difference
-
 #define CONSOLE_WINDOW_NAME                            "ConsoleWindow"
 #define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\ConsoleBackground.frm"
 #define CONSOLE_PROMPT_CHARACTER                       "$"

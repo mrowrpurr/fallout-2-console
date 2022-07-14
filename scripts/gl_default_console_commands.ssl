@@ -1,0 +1,26 @@
+#include "Console.h"
+#include "PrintConsole.h"
+
+#include "Console/Commands/givecaps.h"
+
+/*
+    Once the sfall temp array bug has been resolved,
+    the syntax will look like this:
+
+    procedure start begin
+        if game_loaded then begin
+            register_console_command("givecaps", ConsoleCommand_givecaps);
+        end
+    end
+*/
+
+procedure start begin
+    enable_console_commands; // Note: you can *not* use this with a global repeat!
+    if game_loaded then begin
+        register_console_command begin
+            // console_command_name("givecaps");
+            // console_command_proc      ConsoleCommand_givecaps;
+            // console_command_proc_name "ConsoleCommand_givecaps";
+        end
+    end
+end

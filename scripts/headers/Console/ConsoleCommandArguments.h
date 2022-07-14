@@ -1,6 +1,10 @@
 #pragma once
 
-#define get_console_args console_data.most_recent_command_line_arguments
+#define get_console_args      console_data.most_recent_command_line_arguments
+#define any_console_args      (len_array(console_data.most_recent_command_line_arguments) > 0)
+#define console_arg_count     len_array(console_data.most_recent_command_line_arguments)
+#define get_console_arg_int   atoi(get_console_arg)
+#define get_console_arg_float atof(get_console_arg)
 
 procedure get_console_arg begin
     variable arg;

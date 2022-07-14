@@ -8,3 +8,9 @@
 #include "Console/ConsoleCommandRegistration.h"
 #include "Console/ConsoleCommandArguments.h"
 #include "Console/PrintConsole.h"
+
+// Include this AWFUL hack which sets up global scripts
+// to WATCH for console command invocations via
+// set_global_script_repeat (~twice a second)
+// UNTIL the sfall bug with SignalNamed and temp arrays is fixed
+#include "Console/Hack_ConsoleCommandInvocationListenter_Hack.h"
