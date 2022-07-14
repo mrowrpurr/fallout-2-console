@@ -7,7 +7,9 @@
 #include "Console/ConsoleCommandRegistry.h"
 #include "Console/ConsoleCommandRegistration.h"
 #include "Console/ConsoleCommandArguments.h"
+#include "Console/ConsoleCommandTargets.h"
 #include "Console/PrintConsole.h"
+#include "Console/ConsoleVisibility.h"
 
 // Include this AWFUL hack which sets up global scripts
 // to WATCH for console command invocations via

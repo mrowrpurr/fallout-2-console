@@ -1,8 +1,15 @@
 #include "Console.h"
 #include "PrintConsole.h"
 
+#include "define.h"
+#include "command.h"
+
+#include "Console/Commands/destroy.h"
+#include "Console/Commands/gettype.h"
 #include "Console/Commands/givecaps.h"
 #include "Console/Commands/goto.h"
+#include "Console/Commands/getname.h"
+#include "Console/Commands/spawn.h"
 
 /*
     Once the sfall temp array bug has been resolved,
@@ -18,7 +25,11 @@
 procedure start begin
     enable_console_commands; // Note: you can *not* use this with a global repeat!
     if game_loaded then begin
+        register_console_command("destroy",  "ConsoleCommand_destroy",  ConsoleCommand_destroy);
         register_console_command("givecaps", "ConsoleCommand_givecaps", ConsoleCommand_givecaps);
+        register_console_command("gettype",  "ConsoleCommand_gettype",  ConsoleCommand_gettype);
         register_console_command("goto",     "ConsoleCommand_goto",     ConsoleCommand_goto);
+        register_console_command("getname",  "ConsoleCommand_getname",  ConsoleCommand_getname);
+        register_console_command("spawn",    "ConsoleCommand_spawn",    ConsoleCommand_spawn);
     end
 end

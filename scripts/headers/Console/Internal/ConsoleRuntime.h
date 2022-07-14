@@ -11,10 +11,13 @@
 #include "Console/ConsoleCommandRegistry.h"
 #include "Console/PrintConsole.h"
 #include "Console/ConsoleUI.h"
+#include "Console/ConsoleVisibility.h"
 #include "Console/Internal/ConsoleRuntimeKeyboardBindings.h"
+#include "Console/Internal/ConsoleRuntimeMouseBindings.h"
 #include "Console/Internal/ConsoleRuntimeHooks.h"
 #include "Console/Internal/ConsoleRuntimeCommandRegistry.h"
 #include "Console/Internal/ConsoleRuntimeConsoleEventHandlers.h"
+#include "Console/Internal/ConsoleRuntimeTargets.h"
 
 procedure start begin
     if game_loaded then begin
@@ -23,9 +26,10 @@ procedure start begin
         if ConsoleRuntime_InitializeData then
             if ConsoleRuntime_InitializeConfig then
                 if ConsoleUI_Initialize then
-                    if ConsoleRuntime_InitializeCommandRegistry then
-                        if ConsoleRuntime_InitializeConsoleEventHandlers then
-                            if ConsoleRuntime_InitializeHooks then
-                                debug("started ok.");
+                    if ConsoleRuntime_InitializeTargets then
+                        if ConsoleRuntime_InitializeCommandRegistry then
+                            if ConsoleRuntime_InitializeConsoleEventHandlers then
+                                if ConsoleRuntime_InitializeHooks then
+                                    debug("started ok.");
     end
 end

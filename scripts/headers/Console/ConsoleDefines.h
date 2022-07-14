@@ -10,3 +10,11 @@
 //  2. Prefix every define with CONSOLE_
 
 #define CONSOLE_COMMAND_NAMED_HANDLER_PREFIX "ConsoleCommand:"
+
+// Hardcoded Shift keycodes
+#define KEYCODE_LEFT_SHIFT  42
+#define KEYCODE_RIGHT_SHIFT 54
+
+// Hardcoded Shift keycodes
+#define KEYCODE_LEFT_CTRL  29
+#define KEYCODE_RIGHT_CTRL 157

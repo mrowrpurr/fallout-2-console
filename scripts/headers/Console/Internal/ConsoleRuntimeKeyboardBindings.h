@@ -4,10 +4,6 @@
 // then to be processed by Fallout
 #define KEYCODE_THAT_DOES_NOTHING 255
 
-// Hardcoded Shift keycodes
-#define KEYCODE_LEFT_SHIFT  42
-#define KEYCODE_RIGHT_SHIFT 54
-
 #define CONSOLE_EXECUTED_COMMAND_PROMPT_CHARACTER ">"
 
 // Tracked whether SHIFT in currently pressed because key_pressed()
@@ -107,14 +103,14 @@ procedure ConsoleRuntime_Hooks_Keypress begin
     variable pressed = get_sfall_arg,
              keycode = get_sfall_arg;
 
-    // We only care about the *pressed* event, not *released*
-    if not pressed then return;
-
     // Track SHIFT
     if keycode == KEYCODE_LEFT_SHIFT or keycode == KEYCODE_RIGHT_SHIFT then begin
         is_shift_pressed = pressed;
         return;
     end
+
+    // We only care about the *pressed* event, not *released*
+    if not pressed then return;
 
     // The .ini configuration file uses string keys.
     // So get a string representation of the keycode.
