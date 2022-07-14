@@ -2,6 +2,7 @@
 #include "PrintConsole.h"
 
 #include "Console/Commands/givecaps.h"
+#include "Console/Commands/goto.h"
 
 /*
     Once the sfall temp array bug has been resolved,
@@ -18,5 +19,6 @@ procedure start begin
     enable_console_commands; // Note: you can *not* use this with a global repeat!
     if game_loaded then begin
         register_console_command("givecaps", "ConsoleCommand_givecaps", ConsoleCommand_givecaps);
+        register_console_command("goto",     "ConsoleCommand_goto",     ConsoleCommand_goto);
     end
 end
