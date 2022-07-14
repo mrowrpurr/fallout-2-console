@@ -18,7 +18,9 @@
 #define __console_command_global_script_repeat_time (100)
 
 //
-#define enable_console_commands call __console_command_script_global_repeat_command_invocation_checker
+#define enable_console_commands \
+    console_data = __console_data; \
+    call __console_command_script_global_repeat_command_invocation_checker
 
 //
 variable __console_command_map_of_command_names;
@@ -52,6 +54,8 @@ variable __console_command_name_string_proc_fake_result_variable_for_invocation 
 //
 #define register_console_command(command_name, proc_name, proc) \
     __console_command_map_of_command_names[command_name] = proc_name; \
+    call array_push(console_data.registered_console_command_names, command_name); \
+    display_msg(debug_array_str(console_data.registered_console_command_names)); \
     __console_command_name_registration_optimizer_trick_variable = false; \
     if __console_command_name_registration_optimizer_trick_variable then \
         call proc

@@ -14,11 +14,15 @@
     end
 */
 
+// run_console_command_handler("ConsoleCommand_givecaps");
+
 procedure start begin
+
+
     enable_console_commands; // Note: you can *not* use this with a global repeat!
     if game_loaded then begin
+        display_msg("THIS IS THE CONSOLE COMMAND THINGY!");
+        display_msg("THE WHOLE console_data: " + debug_array_str(console_data));
         register_console_command("givecaps", "ConsoleCommand_givecaps", ConsoleCommand_givecaps);
-
-        run_console_command_handler("ConsoleCommand_givecaps");
     end
 end
