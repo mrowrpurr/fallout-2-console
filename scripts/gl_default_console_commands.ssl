@@ -17,10 +17,8 @@
 procedure start begin
     enable_console_commands; // Note: you can *not* use this with a global repeat!
     if game_loaded then begin
-        register_console_command begin
-            // console_command_name("givecaps");
-            // console_command_proc      ConsoleCommand_givecaps;
-            // console_command_proc_name "ConsoleCommand_givecaps";
-        end
+        register_console_command("givecaps", "ConsoleCommand_givecaps", ConsoleCommand_givecaps);
+
+        run_console_command_handler("ConsoleCommand_givecaps");
     end
 end

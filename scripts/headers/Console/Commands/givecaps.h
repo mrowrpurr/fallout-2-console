@@ -1,6 +1,11 @@
 #pragma once
 
 procedure ConsoleCommand_givecaps begin
+
+    display_msg("YOU RAN THE HANDLER!!!");
+    return 69;
+
+
     // TODO select target!
     variable target = dude_obj;
 

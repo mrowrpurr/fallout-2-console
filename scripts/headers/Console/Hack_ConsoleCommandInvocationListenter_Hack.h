@@ -40,8 +40,42 @@ procedure __console_command_script_global_repeat_command_invocation_checker begi
     end
 end
 
+//
+variable __console_command_name_registration_optimizer_trick_variable = true;
 
-#define register_console_command setup_invoke_procs
+//
+variable __console_command_name_string_proc_name_variable_for_invocation = true;
 
+//
+variable __console_command_name_string_proc_fake_result_variable_for_invocation = true;
+
+//
+#define register_console_command(command_name, proc_name, proc) \
+    __console_command_map_of_command_names[command_name] = proc_name; \
+    __console_command_name_registration_optimizer_trick_variable = false; \
+    if __console_command_name_registration_optimizer_trick_variable then \
+        call proc
+
+//
+#define run_console_command_handler(proc_name) \
+    __console_command_name_string_proc_name_variable_for_invocation = proc_name; \
+    __console_command_name_string_proc_fake_result_variable_for_invocation = __console_command_name_string_proc_name_variable_for_invocation(); \
+    __console_command_name_registration_optimizer_trick_variable = false; \
+    if __console_command_name_registration_optimizer_trick_variable then \
+        debug_msg(__console_command_name_string_proc_fake_result_variable_for_invocation)
+
+
+
+
+
+
+
+
+//
 // #define console_command_name(command_name) \
-//     __console_command_map_of_command_names[command_name] = true
+//     __console_command_map_of_command_names[command_name] = true; \
+//     __console_command_name_currently_being_registered = command_name
+
+// //
+// #define console_command_proc_name(proc_name) \
+//     __console_command_map_of_command_names[__console_command_name_currently_being_registered] = proc_name
