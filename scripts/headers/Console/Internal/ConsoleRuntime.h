@@ -18,7 +18,6 @@
 
 procedure start begin
     if game_loaded then begin
-        display_msg("RUNTIME!");
         debug("starting...");
         set_global_script_type(1); // <--- UI script type
         if ConsoleRuntime_InitializeData then

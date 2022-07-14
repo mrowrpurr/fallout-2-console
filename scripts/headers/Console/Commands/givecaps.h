@@ -1,11 +1,6 @@
 #pragma once
 
 procedure ConsoleCommand_givecaps begin
-
-    display_msg("YOU RAN THE HANDLER!!!");
-    return 69;
-
-
     // TODO select target!
     variable target = dude_obj;
 
@@ -15,9 +10,7 @@ procedure ConsoleCommand_givecaps begin
     end
 
     variable caps = get_console_arg_int;
-    PrintConsole1("CAPS: %s", caps);
-    variable _ = item_caps_adjust(target, caps);
-    PrintConsole("DO WE GET HERE?");
+    item_caps_adjust(target, caps);
 
     if caps > 0 then
         PrintConsole2("Added %s caps to %s", caps, obj_name(target));

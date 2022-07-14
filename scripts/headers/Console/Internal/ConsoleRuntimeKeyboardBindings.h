@@ -42,10 +42,12 @@ procedure on_enter begin
         // set the arguments for sharing with the console command
         console_data.most_recent_command_line_arguments = command_parts;
 
-        debug_msg("RECENT ARGS: " + debug_array_str(console_data.most_recent_command_line_arguments));
-        
         // tell the console command that it's time to run!
-        SignalNamed(CONSOLE_COMMAND_NAMED_HANDLER_PREFIX + command_name);
+        // Note: can not use SignalNamed until this sfall bug is resolved:
+        // https://github.com/sfall-team/sfall/issues/440
+        // SignalNamed(CONSOLE_COMMAND_NAMED_HANDLER_PREFIX + command_name);
+        // Do this instead:
+        console_data.most_recent_command_name_ready_for_execution = command_name;
 
     end else begin
         // Make this PrintError - red
