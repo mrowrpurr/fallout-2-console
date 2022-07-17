@@ -71,6 +71,7 @@ end
 #define register_console_command(command_name, proc_name, proc) \
     __console_command_map_of_command_names_to_proc_names[command_name] = proc_name; \
     call array_push(console_data.registered_console_command_names, command_name); \
+    debug_msg(sprintf("Registered console command: %s", command_name)); \
     __console_command_name_registration_optimizer_trick_variable = false; \
     if __console_command_name_registration_optimizer_trick_variable then \
         call proc

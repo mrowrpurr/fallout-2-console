@@ -2,8 +2,8 @@
 
 #define DEBUG_NAME "Console"
 
+#include "Console/DebugHelper.h"
 #include "Console/Internal/ConsoleRuntimeIncludes.h"
-#include "Console/Internal/ConsoleRuntimeDebug.h"
 #include "Console/Internal/ConsoleRuntimeData.h"
 #include "Console/Internal/ConsoleRuntimeConfig.h"
 #include "Console/ConsoleDefines.h"
@@ -18,6 +18,7 @@
 #include "Console/Internal/ConsoleRuntimeCommandRegistry.h"
 #include "Console/Internal/ConsoleRuntimeConsoleEventHandlers.h"
 #include "Console/Internal/ConsoleRuntimeTargets.h"
+#include "Console/FalloutEtTu.h"
 
 procedure start begin
     if game_loaded then begin

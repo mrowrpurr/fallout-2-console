@@ -2,7 +2,9 @@
 
 // Keycode to return when we want to hijack keys and not send
 // then to be processed by Fallout
-#define KEYCODE_THAT_DOES_NOTHING 255
+// #define KEYCODE_THAT_DOES_NOTHING 255
+#define KEYCODE_THAT_DOES_NOTHING 39
+// ;
 
 #define CONSOLE_EXECUTED_COMMAND_PROMPT_CHARACTER ">"
 
@@ -103,6 +105,9 @@ procedure ConsoleRuntime_Hooks_Keypress begin
     variable pressed = get_sfall_arg,
              keycode = get_sfall_arg;
 
+    // If the console is open, we completely steal the key from anyone else.
+    if is_console_open then set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
+
     // Track SHIFT
     if keycode == KEYCODE_LEFT_SHIFT or keycode == KEYCODE_RIGHT_SHIFT then begin
         is_shift_pressed = pressed;
@@ -120,23 +125,20 @@ procedure ConsoleRuntime_Hooks_Keypress begin
     switch string_keycode begin
         case console_data.config.Shortcuts.toggle_console: begin
             call ConsoleUI_Toggle;
-            set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
             return;
         end
         case console_data.config.Shortcuts.open_console: begin
             call ConsoleUI_Show;
-            set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
             return;
         end
         case console_data.config.Shortcuts.close_console: begin
             call ConsoleUI_Hide;
-            set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
             return;
         end
     end
 
     // The following keys all require the console to be visible.
-    if not console_data.ui.visible then return;
+    if not is_console_open then return;
 
     // Handle special keys
     if map_contains_key(console_data.config.SpecialKeys, string_keycode) then begin
@@ -156,7 +158,6 @@ procedure ConsoleRuntime_Hooks_Keypress begin
             case "PGUP":  call on_pagedown;
             case "PGDN":  call on_pageup;
         end
-        set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
         return;
     end
 
@@ -168,7 +169,5 @@ procedure ConsoleRuntime_Hooks_Keypress begin
         else
             character = substr(console_data.config.Keys[string_keycode], 0, 1);
         call ConsoleUI_TypeKey(character);
-        set_sfall_return(KEYCODE_THAT_DOES_NOTHING);
-        return;
     end
 end

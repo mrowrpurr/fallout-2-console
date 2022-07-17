@@ -10,6 +10,7 @@
 #include "Console/ConsoleCommandTargets.h"
 #include "Console/PrintConsole.h"
 #include "Console/ConsoleVisibility.h"
+#include "Console/FalloutEtTu.h"
 
 // Include this AWFUL hack which sets up global scripts
 // to WATCH for console command invocations via
