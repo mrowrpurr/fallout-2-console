@@ -40,6 +40,8 @@ procedure on_enter begin
         // set the arguments for sharing with the console command
         console_data.most_recent_command_line_arguments = command_parts;
 
+        debug1f("Execute command: %s", command_text);
+
         // tell the console command that it's time to run!
         // Note: can not use SignalNamed until this sfall bug is resolved:
         // https://github.com/sfall-team/sfall/issues/440
