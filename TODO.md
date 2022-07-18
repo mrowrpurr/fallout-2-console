@@ -1,7 +1,12 @@
 # TODO
 
-- [ ] Update console command execution to work via global timers AND signals
+- [ ] Add Map names to Search index
+- [ ] Update search to allow for "Categories": ["x", "y"] not just a single category (???) - less important
+
+- [x] Update console command execution to work via global timers AND signals
       with the idea of turning off the global timers once sfall is fixed
+
+- [ ] switch code back to Signals (using critical)
 
 - [ ] selecttarget
 - [ ] dude. or player. to set target to the dude
@@ -18,6 +23,15 @@
 - [ ] search command (need to get the PID for anything, like the hex in Skyrim)
 - [ ] up and down go thru the command history
 
+## More Informative Console
+
+- [ ] show Obj ID
+- [ ] show PID
+- [ ] show just ID if it's a tile - oh, and elevation
+
 ## Commands
 
-- [ ] givecaps
+- [x] search
+- [ ] get
+- [ ] give
+- [ ] view inventory
