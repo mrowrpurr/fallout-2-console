@@ -4,6 +4,10 @@
 
 > Let's get it rendering OK at *every* resolution
 
+- [ ] Try just a box o' color (not for default, but folks can configure)
+      - [ ] Add borders of a different color
+- [ ] Try partial alpha opacity, does it do anything? Or is it all or nothing?
+- [ ] Grab a fun/funny background at 640 and use it as an example for fun
 - [ ] Scales to a default screen percentage
 - [ ] Scales to screen percentage defined in .ini
 - [ ] Scales to screen percentage defined in .ini for specific resolution

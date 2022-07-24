@@ -47,7 +47,8 @@ procedure ConsoleUI_Render begin
     debug2f("Screen Resolution: %sx%s", screen_width, screen_height);
 
     variable console_width  = screen_width;
-    variable console_height = floor(screen_height * 0.45);
+    variable console_height = floor(screen_height * 0.90);
+    // variable console_height = floor(screen_height * 0.45);
     debug2f("Console Resolution: %sx%s", console_width, console_height);
 
     variable console_x = 0;
