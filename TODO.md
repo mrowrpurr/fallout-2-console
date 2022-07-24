@@ -9,6 +9,8 @@
 - [ ] Scales to screen percentage defined in .ini for specific resolution
 - [ ] Scales to screen pixels defined in .ini
 - [ ] Scales to screen pixels defined in .ini for specific resolution
+- [ ] Console commands to scale art
+- [ ] Console commands to swap art
 
 ## Unsorted
 
