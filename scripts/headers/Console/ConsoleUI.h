@@ -1,13 +1,17 @@
 #pragma once
 
 // Useful for getting hex --> float
+// Add this to .ini if we don't auto convert 0,255 to floats for you
+// (or better yet, hex! Let's support hex OR standard rgb(r, g, b))
 // https://corecoding.com/utilities/rgb-or-hex-to-float.php
 
 #define CONSOLE_WINDOW_NAME                            "ConsoleWindow"
-#define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\ConsoleBackground.frm"
+#define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\Console_1024_267.frm"
+// #define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\ConsoleBackground.frm"
 #define CONSOLE_PROMPT_CHARACTER                       "$"
-#define CONSOLE_BACKGROUND_WIDTH                       640
-#define CONSOLE_BACKGROUND_HEIGHT                      260
+// #define CONSOLE_BACKGROUND_WIDTH                       640
+// #define CONSOLE_BACKGROUND_HEIGHT                      260
+// Current hardcoded design is 1920x500 which is 46.3% of the screen height
 #define CONSOLE_COMMAND_DEFAULT_LINE_HEIGHT            (14)
 #define CONSOLE_COMMAND_DEFAULT_FONT                   101
 #define CONSOLE_COMMAND_TEXT_JUSTIFY                   justifyleft
@@ -33,28 +37,66 @@ variable is_console_busy;
 variable console_window_instaniated;
 
 procedure ConsoleUI_Render begin
+    debug("ConsoleUI Render");
+
+    variable art_width = 1024;
+    variable art_height = 267;
+
+    variable screen_width  = get_screen_width;
+    variable screen_height = get_screen_height;
+    debug2f("Screen Resolution: %sx%s", screen_width, screen_height);
+
+    variable console_width  = screen_width;
+    variable console_height = floor(screen_height * 0.45);
+    debug2f("Console Resolution: %sx%s", console_width, console_height);
+
+    variable console_x = 0;
+    variable console_y = screen_height - console_height;
+    debug2f("Console Position: %sx%s", console_x, console_y);
+
     if console_window_instaniated then begin
-        SelectWin(CONSOLE_WINDOW_NAME);
-        FillRect(
-            CONSOLE_COMMAND_ENTRY_BACKGROUND_X,
-            CONSOLE_COMMAND_ENTRY_BACKGROUND_Y,
-            CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH,
-            CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT,
-            CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR
-        );
+
+        debug("Console Window Already Instantiated");
+
+        // SelectWin(CONSOLE_WINDOW_NAME);
+        // FillRect(
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_X,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_Y,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR
+        // );
     end else begin
-        console_window_instaniated = true; 
+
+        debug("Console Window Instantiating...");
+        
+        console_window_instaniated = true;
         create_win_flag(
             CONSOLE_WINDOW_NAME,
-            console_data.ui.x,
-            console_data.ui.y,
-            CONSOLE_BACKGROUND_WIDTH,
-            CONSOLE_BACKGROUND_HEIGHT,
+            console_x,
+            console_y,
+            art_width,
+            art_height,
             WIN_FLAG_HIDDEN + WIN_FLAG_MOVEONTOP
         );
         SelectWin(CONSOLE_WINDOW_NAME);
+
+        debug("draw_image");
         draw_image(CONSOLE_BACKGROUND_FRM, 0, 0, 0, true);
+
+        debug("ScaleWin");
+        ScaleWin(CONSOLE_WINDOW_NAME, console_x, console_y, console_width, console_height);
+
     end
+
+    debug("ShowWin...");
+    ShowWin;
+    debug("Showed.");
+end
+
+procedure ConsoleUI_Render_ORIGINAL_DRAFT begin
+    // ...
+
     SetFont(CONSOLE_COMMAND_DEFAULT_FONT);
     SetTextColor(CONSOLE_RGB_COLOR_GREEN);
     Format(
@@ -144,15 +186,15 @@ procedure ConsoleUI_Initialize begin
     console_data.ui.output_text_lines = [];
     fix_array(console_data.ui.output_text_lines);
 
-    console_data.ui.screen_width  = get_screen_width;
-    console_data.ui.screen_height = get_screen_height;
+    // console_data.ui.screen_width  = get_screen_width;
+    // console_data.ui.screen_height = get_screen_height;
 
-    if not console_data.ui.screen_width  then console_data.ui.screen_width  = 640;
-    if not console_data.ui.screen_height then console_data.ui.screen_height = 480;
+    // if not console_data.ui.screen_width  then console_data.ui.screen_width  = 640;
+    // if not console_data.ui.screen_height then console_data.ui.screen_height = 480;
 
-    // Position at the bottom of the screen by default
-    console_data.ui.x = 0;
-    console_data.ui.y = console_data.ui.screen_height - CONSOLE_BACKGROUND_HEIGHT;
+    // // Position at the bottom of the screen by default
+    // console_data.ui.x = 0;
+    // console_data.ui.y = console_data.ui.screen_height - CONSOLE_BACKGROUND_HEIGHT;
 
     RegisterConsoleEventProc(CONSOLE_EVENT_RENDER, ConsoleUI_Render);
     RegisterConsoleEventProc(CONSOLE_EVENT_OPEN,   ConsoleUI_Show);

@@ -1,5 +1,17 @@
 # TODO
 
+## Resolutions and Scaling
+
+> Let's get it rendering OK at *every* resolution
+
+- [ ] Scales to a default screen percentage
+- [ ] Scales to screen percentage defined in .ini
+- [ ] Scales to screen percentage defined in .ini for specific resolution
+- [ ] Scales to screen pixels defined in .ini
+- [ ] Scales to screen pixels defined in .ini for specific resolution
+
+## Unsorted
+
 - [ ] Add Map names to Search index
 - [ ] Update search to allow for "Categories": ["x", "y"] not just a single category (???) - less important
 
