@@ -6,7 +6,8 @@
 // https://corecoding.com/utilities/rgb-or-hex-to-float.php
 
 #define CONSOLE_WINDOW_NAME                            "ConsoleWindow"
-#define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\Console_1024_267.frm"
+#define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\Console_1920_75_Percent_Partial_Opacity.frm"
+// #define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\Console_1024_267.frm"
 // #define CONSOLE_BACKGROUND_FRM                         "art\\intrface\\Console\\ConsoleBackground.frm"
 #define CONSOLE_PROMPT_CHARACTER                       "$"
 // #define CONSOLE_BACKGROUND_WIDTH                       640
@@ -36,18 +37,102 @@
 variable is_console_busy;
 variable console_window_instaniated;
 
+// Try just background color
 procedure ConsoleUI_Render begin
-    debug("ConsoleUI Render");
-
-    variable art_width = 1024;
-    variable art_height = 267;
 
     variable screen_width  = get_screen_width;
     variable screen_height = get_screen_height;
     debug2f("Screen Resolution: %sx%s", screen_width, screen_height);
 
     variable console_width  = screen_width;
-    variable console_height = floor(screen_height * 0.90);
+    variable console_height = floor(screen_height * 0.40);
+    debug2f("Console Resolution: %sx%s", console_width, console_height);
+
+    variable console_x = 0;
+    variable console_y = screen_height - console_height;
+    debug2f("Console Position: %sx%s", console_x, console_y);
+
+    if console_window_instaniated then begin
+
+        debug("Console Window Already Instantiated");
+
+        // SelectWin(CONSOLE_WINDOW_NAME);
+        // FillRect(
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_X,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_Y,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_WIDTH,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_HEIGHT,
+        //     CONSOLE_COMMAND_ENTRY_BACKGROUND_COLOR
+        // );
+
+    end else begin
+
+        debug("Console Window Instantiating...");
+        
+        console_window_instaniated = true;
+        create_win_flag(
+            CONSOLE_WINDOW_NAME,
+            console_x,
+            console_y,
+            console_width,
+            console_height,
+            WIN_FLAG_HIDDEN + WIN_FLAG_MOVEONTOP
+        );
+        SelectWin(CONSOLE_WINDOW_NAME);
+
+        // Dark dark pink background #2b242b
+        // 0.169, 0.141, 0.008
+        //
+        // #822479
+        // 0.51, 0.141, 0.475
+        //
+        // #541c4f
+        // 0.329, 0.11, 0.31
+        //
+        // #361232
+        // 0.212, 0.071, 0.196
+
+        // Bright pink foreground #fc00f4
+        // 0.988, 0, 0.957
+        //
+        // #ff00e6
+        // 1, 0, 0.055
+
+        FillWin(0.0, 0.0, 0.0);
+
+        // Try to render some text
+        SetFont(CONSOLE_COMMAND_DEFAULT_FONT);
+        SetTextColor(0.988, 0, 0.957);
+        Format(
+            "Hello, world!",
+            30,
+            69,
+            500,
+            12,
+            CONSOLE_COMMAND_TEXT_JUSTIFY
+        );
+
+    end
+
+    debug("ShowWin...");
+    ShowWin;
+    debug("Showed.");
+
+end
+
+procedure ConsoleUI_Render_IMAGE begin
+    debug("ConsoleUI Render");
+
+    variable art_width = 1920;
+    variable art_height = 1440;
+
+    variable screen_width  = get_screen_width;
+    variable screen_height = get_screen_height;
+    debug2f("Screen Resolution: %sx%s", screen_width, screen_height);
+
+    variable console_width  = screen_width;
+    variable console_height = floor(screen_height * 0.75);
+    // variable console_height = floor(screen_height * 0.90);
     // variable console_height = floor(screen_height * 0.45);
     debug2f("Console Resolution: %sx%s", console_width, console_height);
 

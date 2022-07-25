@@ -5,8 +5,9 @@
 > Let's get it rendering OK at *every* resolution
 
 - [ ] Try just a box o' color (not for default, but folks can configure)
-      - [ ] Add borders of a different color
-- [ ] Try partial alpha opacity, does it do anything? Or is it all or nothing?
+  - [ ] Add borders of a different color
+- [x] Try partial alpha opacity, does it do anything? Or is it all or nothing?
+  - > didn't show the image at all, could try again later tho?
 - [ ] Grab a fun/funny background at 640 and use it as an example for fun
 - [ ] Scales to a default screen percentage
 - [ ] Scales to screen percentage defined in .ini
@@ -53,3 +54,7 @@
 - [ ] get
 - [ ] give
 - [ ] view inventory
+
+## Extra
+
+At some point, consider `$` variables (_try not to tho lol, too much!_)
