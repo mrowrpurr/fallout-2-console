@@ -1,0 +1,10 @@
+#include "Waterchip.h"
+#include "CommonUI/RGBColor.h"
+
+describe("RGBColor") begin
+
+    it("can get RGB int values of RGB from hex color") begin
+        
+    end
+
+end
