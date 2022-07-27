@@ -4,7 +4,7 @@ procedure HexToDecimal(variable hex_string) begin
     switch typeof(hex_string) begin
         case 1: return hex_string; // Already an integer
         case 2: begin
-            debug_msg(sprintf("[HexToDecimal] Invalid argument. Expected string, received float (%s)", hex_string));
+            debug_msg(sprintf("[HexToDecimal] Invalid argument. Expected string of hexadecimal characters, received float (%s)", hex_string));
             return -1;
         end
     end
@@ -26,8 +26,7 @@ procedure HexToDecimal(variable hex_string) begin
             decimal += (value - 87) * base;
             base    *= 16;
         end else begin
-            // invalid char?
-            debug_msg("THE VALUE IS " + value + " for CHARACTER " + character);
+            debug_msg(sprintf("[HexToDecimal] Invalid argument. Expected string of hexadecimal characters. Invalid character: '%s'", character));
             return -1;
         end
         index -= 1;
