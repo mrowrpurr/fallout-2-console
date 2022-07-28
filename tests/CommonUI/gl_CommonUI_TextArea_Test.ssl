@@ -1,0 +1,19 @@
+#include "Waterchip.h"
+#include "CommonUI/TextArea.h"
+
+describe("TextArea") begin
+
+    variable text_area;
+
+    it("can provide custom name for text area (its window name)") begin
+
+    end
+
+    xit("generates a random, unique window name by default") begin
+
+    end
+
+    teardown begin
+        TextArea_Destroy(text_area);
+    end
+end
