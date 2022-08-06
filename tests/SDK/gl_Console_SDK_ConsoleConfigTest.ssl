@@ -1,5 +1,12 @@
 #include "Waterchip.h"
+#include "sfall/dik.h"
 #include "Console/SDK/ConsoleConfig.h"
+
+#define MOCK_CONSOLE_INI_1 "tests/Mocks/ConsoleConfig1.ini"
+#define MOCK_CONSOLE_INI_2 "tests/Mocks/ConsoleConfig2.ini"
+
+#define use_mock_config_1 set_console_ini_path(MOCK_CONSOLE_INI_1)
+#define use_mock_config_2 set_console_ini_path(MOCK_CONSOLE_INI_2)
 
 describe("Console.ini configuration") begin
     it("can get path to Console.ini configuration file") begin
@@ -10,5 +17,13 @@ describe("Console.ini configuration") begin
         expect(get_console_ini_path) to_equal("mods/different.console.ini");
     end
 
-    todo("can get keyboard shortcut");
+    it("can get keyboard shortcut") begin
+        use_mock_config_1;
+
+        variable first_shortcut = get_console_ini_keyboard_shortcut(
+            "first_shortcut"
+        );
+
+        expect(first_shortcut.keycode) to_equal(30);
+    end
 end
