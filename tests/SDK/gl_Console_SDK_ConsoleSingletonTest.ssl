@@ -1,0 +1,7 @@
+#include "Waterchip.h"
+#include "Console/SDK/ConsoleSingleton.h"
+
+describe("Console Singleton") begin
+    todo("can be initialized");
+    todo("can be destroyed");
+end

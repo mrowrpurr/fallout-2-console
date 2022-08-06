@@ -1,0 +1,14 @@
+#include "Waterchip.h"
+#include "Console/SDK/ConsoleConfig.h"
+
+describe("Console.ini configuration") begin
+    it("can get path to Console.ini configuration file") begin
+        set_console_ini_path("mods/test.console.ini");
+        expect(get_console_ini_path) to_equal("mods/test.console.ini");
+
+        set_console_ini_path("mods/different.console.ini");
+        expect(get_console_ini_path) to_equal("mods/different.console.ini");
+    end
+
+    todo("can get keyboard shortcut");
+end

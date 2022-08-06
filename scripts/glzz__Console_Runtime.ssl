@@ -1,0 +1,19 @@
+/*
+    Runtime for the Fallout 2 console
+
+    This script is prefixed with `glzz_` because it MUST run after ALL other
+    mods are loaded.
+
+    This allows us to run the KeyboardListener LAST, after ALL other mods.
+
+    If we do not do this, then we cannot override the keyboard shortcuts
+    configured by other mods.
+*/
+
+#include "sfall/sfall.h"
+
+#include "Console/Runtime/KeyboardListener.h"
+
+procedure start begin
+    register_hook_proc(HOOK_KEYPRESS, ConsoleRuntimeKeypressListener_Hook);
+end

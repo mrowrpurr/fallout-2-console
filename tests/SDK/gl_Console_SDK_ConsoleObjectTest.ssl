@@ -1,0 +1,14 @@
+#include "Waterchip.h"
+#include "Console/SDK/ConsoleObject.h"
+
+describe("Console Object") begin
+
+    variable console_data;
+
+    setup begin
+        console_data = __CONSOLE_DATA__;
+    end
+
+    todo("can be initialized");
+    todo("can be destoryed (frees all child objects)");
+end

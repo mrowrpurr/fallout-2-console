@@ -1,0 +1,16 @@
+/*
+    SDK for Fallout 2 console
+
+    This script is prefixed with `gl___` because it MUST run BEFORE ALL other
+    mods are loaded.
+
+    This allows us to export shared variables used by many Console scripts.
+*/
+
+// Top-level map for all shared console data
+export variable __CONSOLE_DATA__;
+
+procedure start begin
+    __CONSOLE_DATA__ = {};
+    fix_array(__CONSOLE_DATA__);
+end
