@@ -10,7 +10,17 @@
 // Top-level map for all shared console data
 export variable __CONSOLE_DATA__;
 
-procedure start begin
+inline procedure initialize_console_data begin
     __CONSOLE_DATA__ = {};
     fix_array(__CONSOLE_DATA__);
+end
+
+inline procedure setup_default_console_data begin
+    // Hard-coded for now
+    set_array(__CONSOLE_DATA__, "ConsoleIniPath", "mods/Console.ini");
+end
+
+procedure start begin
+    call initialize_console_data;
+    call setup_default_console_data;
 end

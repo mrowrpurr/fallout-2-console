@@ -9,6 +9,10 @@
 #define use_mock_config_2 set_console_ini_path(MOCK_CONSOLE_INI_2)
 
 describe("Console.ini configuration") begin
+    teardown begin
+        set_console_ini_path(default_console_ini_path);
+    end
+
     it("can get path to Console.ini configuration file") begin
         set_console_ini_path("mods/test.console.ini");
         expect(get_console_ini_path) to_equal("mods/test.console.ini");

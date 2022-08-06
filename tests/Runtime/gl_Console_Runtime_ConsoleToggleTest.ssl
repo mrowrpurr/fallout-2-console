@@ -2,17 +2,23 @@
 
 #include "Console/Runtime/KeyboardListener.h"
 #include "Console/SDK/ConsoleSingleton.h"
+#include "Console/SDK/ConsoleConfig.h"
 
 describe("Toggle Console Open/Closed") begin
 
     setup begin
-        // destroy console
+        call destroy_console_singleton;
+    end
+
+    teardown begin
+        call destroy_console_singleton;
     end
 
     it("initializes console on first toggle") begin
         expect(get_console_singleton) to_be_none;
 
-        // call ConsoleRuntimeKeypressListener(true, get_console_shortcut_toggle);
+        variable keycode = get_console_ini_keyboard_shortcut("toggle_console");
+        call ConsoleRuntimeKeypressListener(true, keycode);
 
         expect(get_console_singleton) not_to_be_none;
     end

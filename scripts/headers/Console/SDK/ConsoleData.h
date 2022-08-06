@@ -14,3 +14,7 @@
 */
 
 import variable __CONSOLE_DATA__;
+
+variable console_data;
+
+#define init_console_data if not console_data then console_data = __CONSOLE_DATA__
