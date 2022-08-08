@@ -20,13 +20,7 @@ procedure get_console_ini_keyboard_shortcut(variable ini_key, variable ini_secti
         ini_file + "|" + ini_section + "|" + ini_key
     );
 
-    if shortcut_text == "" then return 0;
+    if shortcut_text == "" then return {};
 
-    variable dx_scancode = text_to_scan_code(shortcut_text);
-
-    variable shortcut = {
-        "keycode": dx_scancode
-    };
-
-    return shortcut;
+    return text_to_scan_code(shortcut_text);
 end
