@@ -1,10 +1,18 @@
 #pragma once
 
+#include "sfall/define_extra.h"
+
+#include "Common/Color/WebColors.h"
 #include "Common/UI/TextArea.h"
 #include "Common/UI/TextInput.h"
 
+// TODO - read this stuff from the .ini
+#define CONSOLE_BACKGROUND_IMAGE "art/intrface/Console/ConsoleBackground.frm"
+
 procedure new_console_object begin
-    variable console = {};
+    variable console = {
+        "window": "the_console"
+    };
     //     "visible": false
     // };
     fix_array(console);
@@ -17,20 +25,33 @@ procedure new_console_object begin
     console.background_height = background_height;
 
     console.input = TextInput_Create({
-        "font": 103,
-        "color": "hot pink",
-        "width": full_width
+        "font": 101,
+        "color": "lime",
+        "width": (full_width - 40),
+        "y": background_height + 20,
+        "x": 20
     });
 
-    console.input.text = "Hello, this is the input!";
+    console.textarea = TextArea_Create({
+        "font": 101,
+        "color": "white",
+        "width": (full_width - 40),
+        "height": background_height - 50,
+        "y": background_height + 35,
+        "x": 20
+    });
 
-    // variable input_y = background_height + console.input.line_height
-    // console.input.y = input_y;
-
-    // console.textarea = TextArea_Create({
-    //     "height": half_screen_height,
-    //     "y": input_y
-    // });
+    call TextArea_AddColoredLine(console.textarea, "Hello", "white");
+    call TextArea_AddColoredLine(console.textarea, "Wassup?", "lime");
+    call TextArea_AddColoredLine(console.textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "orange red");
+    call TextArea_AddColoredLine(console.textarea, "How goes?", "cornflower blue");
+    call TextArea_AddColoredLine(console.textarea, "This is violet", "blue violet");
+    call TextArea_AddColoredLine(console.textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "Medium Violet Red");
+    call TextArea_AddColoredLine(console.textarea, "This is dark magenta", "DarkMagenta");
+    call TextArea_AddColoredLine(console.textarea, "This is dodger blue", "DodgerBlue");
+    call TextArea_AddColoredLine(console.textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "purple");
+    call TextArea_AddColoredLine(console.textarea, "This is pink", "pink");
+    call TextArea_AddColoredLine(console.textarea, "This is Turquoise", "Turquoise");
 
     return console;
 end
@@ -40,11 +61,65 @@ procedure destroy_console_object(variable console) begin
     free_array(console);
 end
 
-procedure toggle_console_visibility(variable console) begin
-    if not console then return;
-    console.visible = not console.visible;
-    // call TextArea_ToggleVisibility(console.textarea);
+procedure initialize_console(variable console) begin
+    create_win_flag(
+        console.window,
+        0,
+        (get_screen_height / 2),
+        get_screen_width,
+        ceil(get_screen_height / 2),
+        WIN_FLAG_MOVEONTOP + WIN_FLAG_TRANSPARENT
+    );
+    draw_image_scaled(
+        CONSOLE_BACKGROUND_IMAGE,
+        0,
+        0,
+        0,
+        get_screen_width,
+        (get_screen_height / 2)
+    );
+end
+
+procedure show_console(variable console) begin
+    if not console.initialized then call initialize_console(console);
+    SelectWin(console.window);
+
+    // re-render a solid color background
+    variable color = webcolor_hex("black");
+
+    FillRect(
+        14,
+        11,
+        get_screen_width - 28,
+        (get_screen_height / 2) - 22,
+        rgb_red_float_from_hex(color),
+        rgb_green_float_from_hex(color),
+        rgb_blue_float_from_hex(color)
+    );
+    // FillRect (int x, int y, int width, int height, int R, int G, int B)
+
+    ShowWin;
     call TextInput_ToggleVisibility(console.input);
+    call TextArea_ToggleVisibility(console.textarea);
+    console.visible = true;
+end
+
+procedure hide_console(variable console) begin
+    hide_window(console.window);
+    call TextInput_ToggleVisibility(console.input);
+    call TextArea_ToggleVisibility(console.textarea);
+    console.visible = false;
+end
+
+procedure destroy_console(variable console) begin
+
+end
+
+procedure toggle_console_visibility(variable console) begin
+    if console.visible then
+        call hide_console(console);
+    else
+        call show_console(console);
 end
 
 procedure console_handle_keypress(variable console, variable is_pressed, variable dx_scan_code) begin
