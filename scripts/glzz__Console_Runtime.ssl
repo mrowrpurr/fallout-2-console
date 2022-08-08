@@ -11,9 +11,39 @@
 */
 
 #include "sfall/sfall.h"
+#include "sfall/define_extra.h"
 
 #include "Console/Runtime/KeyboardListener.h"
 
 procedure start begin
     register_hook_proc(HOOK_KEYPRESS, ConsoleRuntimeKeypressListener_Hook);
+
+    message_box("HELLO!");
+
+    variable window_name = "some_window";
+    create_win_flag(window_name, 0, 0, get_screen_width, get_screen_height, WIN_FLAG_MOVEONTOP + WIN_FLAG_TRANSPARENT);
+
+    variable height = floor(get_screen_height * 0.8);
+    variable image = "art/intrface/Console/Console_640_50_Percent.frm";
+
+    draw_image_scaled(
+        image,
+        0,
+        0,
+        0,
+        get_screen_width,
+        height
+    );
+
+    SelectWin(window_name);
+    ShowWin;
 end
+
+// #define draw_image(artFile, frame, x, y, noTrans)               sfall_func5("draw_image", artFile, frame, x, y, noTrans)
+// #define draw_image_scaled(artFile, frame, x, y, w, h)           sfall_func6("draw_image_scaled", artFile, frame, x, y, w, h)
+
+// #define WIN_FLAG_DONTMOVE           (0x2) // does not move the window to the foreground when clicking on the window
+// #define WIN_FLAG_MOVEONTOP          (0x4) // places the window on top of other windows
+// #define WIN_FLAG_HIDDEN             (0x8) // hidden window
+// #define WIN_FLAG_EXCLUSIVE         (0x10)
+// #define WIN_FLAG_TRANSPARENT       (0x20) // transparent window flag, the window color with index 0 will be transparent
