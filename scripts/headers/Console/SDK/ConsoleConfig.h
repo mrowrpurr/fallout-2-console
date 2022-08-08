@@ -16,8 +16,6 @@
 procedure get_console_ini_keyboard_shortcut(variable ini_key, variable ini_section = "KeyboardShortcuts", variable ini_file = 0) begin
     if not ini_file then ini_file = get_console_ini_path;
 
-    display_msg("Get .ini shortcut from: " + ini_file);
-
     variable shortcut_text = get_ini_string(
         ini_file + "|" + ini_section + "|" + ini_key
     );

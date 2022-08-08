@@ -16,7 +16,7 @@ procedure ConsoleRuntimeKeypressListener(variable is_pressed, variable dx_scanco
         variable toggle_console_scancode = get_console_ini_keyboard_shortcut("toggle_console");
         if dx_scancode == toggle_console_scancode.keycode then begin
             init_console_singleton;
-            // toggle_console_visibility;
+            toggle_console_singleton_visibility;
         end
     end
 end
