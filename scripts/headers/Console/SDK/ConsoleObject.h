@@ -6,6 +6,10 @@
 #include "Common/UI/TextArea.h"
 #include "Common/UI/TextInput.h"
 
+// TODO change the style of naming these procedures. PascalCase but also don't
+// use the name 'console_x' because these are more private than that,
+// do like ConsoleObject_XXX
+
 // TODO - read this stuff from the .ini
 #define CONSOLE_BACKGROUND_IMAGE "art/intrface/Console/ConsoleBackground.frm"
 
@@ -32,6 +36,7 @@ procedure new_console_object begin
         "x": 20
     });
 
+    // TODO - rename this to output
     console.textarea = TextArea_Create({
         "font": 101,
         "color": "white",
@@ -110,6 +115,22 @@ procedure toggle_console_visibility(variable console) begin
         call show_console(console);
 end
 
+procedure console_execute_command(variable console, variable command_text) begin
+    call TextArea_AddLine(console.textarea, command_text);
+end
+
 procedure console_handle_keypress(variable console, variable is_pressed, variable dx_scan_code) begin
+    // if is_enter_keycode <-- TODO
+
+    if dx_scan_code == 28 and console.visible then begin
+        variable text_input = console.input;
+        variable command_text = text_input.text;
+        if command_text and strlen(command_text) > 0 then begin
+            call TextInput_Clear(text_input);
+            call console_execute_command(console, command_text);
+        end
+        return KEYCODE_WHICH_DOES_NOTHING; // TODO from TextInput, get from elsewhere
+    end
+
     return TextInput_OnKeypress(console.input, is_pressed, dx_scan_code);
 end
