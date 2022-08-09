@@ -41,18 +41,6 @@ procedure new_console_object begin
         "x": 20
     });
 
-    call TextArea_AddColoredLine(console.textarea, "Hello", "white");
-    call TextArea_AddColoredLine(console.textarea, "Wassup?", "lime");
-    call TextArea_AddColoredLine(console.textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "orange red");
-    call TextArea_AddColoredLine(console.textarea, "How goes?", "cornflower blue");
-    call TextArea_AddColoredLine(console.textarea, "This is violet", "blue violet");
-    call TextArea_AddColoredLine(console.textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "Medium Violet Red");
-    call TextArea_AddColoredLine(console.textarea, "This is dark magenta", "DarkMagenta");
-    call TextArea_AddColoredLine(console.textarea, "This is dodger blue", "DodgerBlue");
-    call TextArea_AddColoredLine(console.textarea, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "purple");
-    call TextArea_AddColoredLine(console.textarea, "This is pink", "pink");
-    call TextArea_AddColoredLine(console.textarea, "This is Turquoise", "Turquoise");
-
     return console;
 end
 
